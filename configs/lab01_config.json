@@ -1,0 +1,11 @@
+{
+  "assignment_pattern": "lab-1-*",
+  "key_file": "Lab01-key.txt",
+  "required_files": [
+    "img/scissors.png",
+    "index.html",
+    "script.js",
+    "style.css",
+    "README.md"
+  ]
+}

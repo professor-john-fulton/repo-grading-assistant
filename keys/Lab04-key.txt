@@ -1,0 +1,72 @@
+Lab-4
+
+Build a Django contacts app from scratch.
+
+Start your project.
+
+Create your app. Name it as you like.
+
+Create your templates folder. *** templates folder exists - 4 points
+
+Create your app folder under templates and create index.html, contacts.html, help.html files there. You can use an HTML boilerplate for now.
+In settings.py update
+
+*** folder created under tamplats folder with index.html, contacts.html, help.html files - 4 points
+
+TEMPLATES -> DIRS
+Add your directory
+INSTALLED_APPS
+Add your app name
+Update your models.py *** - 4 points
+
+Update your views.py to include html files - *** - 4 points
+
+Tip:
+#import necessary models
+#include necessary html files
+
+def contacts(request):
+	contact_list = Contact.objects.order_by('first_name')
+	contact_dict = {'contacts':contact_list}
+	return render(request, 'appname/index.html', context=contact_dict)
+
+# complete the code
+Update urls.py  with these
+--- look in urls.py for something like this
+
+    path('', views.index, name='index'),
+    path('contacts/', views.contacts, name='contacts'),
+    path('help/', views.help, name='help')
+
+
+/  or '' (for index.html) *** - 4 points
+/help (for help.html) *** - 4 points
+/contacts (for contacts.html) *** - 4 points
+
+
+Do the migration. Necessary updates for the database.
+*** Look for migration file - 4 points
+
+Do the necessary updates to be able to use the admin interface
+*** - 4 points
+
+Add a couple of contacts using admin interface
+
+Update your index.html, help.html and contacts.html
+
+Contacts.html should list your contacts. *** - 4 points
+The help page should explain the site's functionality. *** - 4 points
+The index page should have a greeting and links to the contacts and help pages. *** - 4 points
+Use CSS to style your pages.*** - 4 points
+Get creative.
+Display those files
+
+localhost:8000/ (for index.html)
+localhost:8000/help/
+localhost:8000/contacts/
+Add screenshots for each of the pages -- look for any  *.png or *.jpg or other image files that are likley matches *** - 4 points
+
+Update the readme file by answering the following questions and typing your answers in that file.
+
+Explain your steps and include screenshots if needed. *** additional text will be in README.md at or after item 15 - 4 points
+Submit your repository via github.

@@ -1,0 +1,15 @@
+{
+  "assignment_pattern": "homework-5-*",
+  "key_file": "Homework05-key.txt",
+  "required_files": [
+    "**/src/index.js",
+    "**/src/contacts.js",
+    "**/src/components/App.jsx",
+    "**/src/components/Card.jsx",
+    "**/public/index.html",
+    "**/public/styles.css"
+  ],
+  "max_score": 30,
+  "language_profile": ["javascript", "web"],
+  "exclusions": []
+}

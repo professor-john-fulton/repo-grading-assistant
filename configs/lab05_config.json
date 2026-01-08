@@ -1,0 +1,15 @@
+{
+  "assignment_pattern": "lab-5-*",
+  "key_file": "Lab05-key.txt",
+  "required_files": [
+    "**/models.py",
+    "**/admin.py",
+    "**/settings.py",
+    "**/views.py",
+    "**/urls.py(2)",
+    "**/*.css"
+  ],
+  "max_score": 60,
+  "language_profile": ["python", "web"],
+  "exclusions":[]
+}

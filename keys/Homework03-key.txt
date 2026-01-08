@@ -1,0 +1,88 @@
+Homework-3
+
+Homework is worth a total of 30 points.
+
+ignore the contents of any node_modules folders
+
+Create a file with the name of ‘webapp.js’ and run a ‘node.js’ server which displays a simple website with the following routes. Please perform the following steps to perform the task.
+
+Link	Description
+/home	Use it for home page
+/contact	Enter your contact information.
+/bio	Add a short bio of yourself.
+Install node.js (https://nodejs.org/en/download/: select LTS) and make sure npm is installed with the package.
+
+Use a terminal of your choice, which is built-in software used to navigate and run commands on your computer without a graphical interface.
+
+Windows terminal (Window’s CMD terminal window)
+git-bash.exe (runs after installing git, it is located under git folder, run as admin)
+Unix based terminals
+Using your terminal open a folder in your directory
+
+mkdir webapp
+Select webapp folder
+
+cd webapp
+Install a coding editor (i.e.“Visual Studio Code”) and create an empty file in the webapp folder.
+
+Create webapp.js
+For package management use the following command. Default settings are OK. You can update author.
+
+npm init
+Install express package (search on Google, how to install using npm)
+
+
+*** package.json exists - 6 points
+
+*** package.json containes reference to express - 6 points
+
+
+Now create server by adding the following completed lines of code in webapp.js
+
+//Require express
+const express = require ("express");
+
+//app object
+const app = express();
+
+//main page
+app.get("/", function(req,res) {
+	res.send ("Welcome to my first Node.js web site.");
+});
+
+//contact page
+app.get("/contact", function(req,res) {
+	res.send ("My name is ..., and ");
+});
+
+app.listen(8002)
+
+*** webapp.js contains this code  - 6 points
+
+
+In the terminal run the node.js by using the following command:
+
+node webapp.js
+Open a web browser (i.e. Chrome)
+
+Check if your server is up and running:
+
+Open a web browser
+Check main page at http://localhost:8002
+Check the contact page at http://localhost:8002/contact
+
+Add /bio page into the webapp.js
+
+*** webapp.js contains code to support /bio pages - 6 points
+
+Update your main page to include links to the /contact and /bio pages.
+Take screenshots of the following:
+http://localhost:8002
+http://localhost:8002/contact
+http://localhost:8002/bio
+Add those screenshots to your assignment folder and make sure they are submitted with your submission.
+
+*** screen shots for 3 pages  - 6 points
+
+
+Note: If there are any unexpected problems running the webapp.js, you can try clearing out the browser cache.

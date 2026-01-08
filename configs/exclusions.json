@@ -1,0 +1,75 @@
+{
+  "global": [
+    ".git",
+    "**/.git/**",
+    ".svn",
+    ".hg",
+    ".DS_Store",
+    "Thumbs.db",
+    "__pycache__",
+    ".idea",
+    ".vscode",
+    "node_modules",
+    "vendor",
+    ".venv",
+    "venv",
+    "**/.venv/**",
+    "**/node_modules/**",
+    "dist",
+    "build",
+    ".pytest_cache",
+    ".coverage",
+    "*.log",
+    "*.pyc",
+    "grade_summary.txt"
+  ],
+
+  "python": [
+    "__pycache__",
+    ".pytest_cache",
+    "*.pyc",
+    "*.pyo",
+    "*.pyd",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "venv",
+    "**/.venv/**",
+    "**/site-packages/**"
+  ],
+
+  "javascript": [
+    "node_modules",
+    "dist",
+    "build",
+    ".next",
+    ".nuxt",
+    "coverage",
+    "*.map"
+  ],
+
+  "java": [
+    "target",
+    "*.class",
+    "*.jar"
+  ],
+
+  "dotnet": [
+    "bin",
+    "obj",
+    "*.dll",
+    "*.exe"
+  ],
+
+  "cpp": [
+    "*.o",
+    "*.out",
+    "cmake-build-*"
+  ],
+
+  "web": [
+    "*.min.js",
+    "*.min.css"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "assignment_pattern": "lab-2-*",
+  "key_file": "Lab02-key.txt",
+  "required_files": [
+    "package.json",
+    "weatherapp.js",
+    "public/index.html",
+    "public/style.css",
+    "README.md"
+  ]
+}

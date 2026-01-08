@@ -1,0 +1,21 @@
+{
+  "assignment_pattern": "lab-4-*",
+  "key_file": "Lab04-key.txt",
+  "required_files": [
+    "README.md",
+    "**/migrations/0001_initial.py",
+    "**/urls.py",
+    "**/templates/index.html",
+    "**/templates/help.html",
+    "**/templates/contacts.html",
+    "**/models.py",
+    "**/views.py",
+    "**/admin.py",
+    "**/static/**/styles.css",
+    "**/*.jpg",
+    "**/*.png"
+  ],
+  "max_score": 60,
+  "language_profile": ["python", "web"],
+  "exclusions":[]
+}
