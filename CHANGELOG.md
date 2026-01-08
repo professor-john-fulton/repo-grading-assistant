@@ -1,29 +1,39 @@
-## 0.0.6 01/07/2026
-    - Cleanup of config and key files and names
-    - Moved respository scripts to seperate repository
-    - Test cleanup
+# Changelog
 
-## 0.0.5 12/7/25
-    - Bonus points
+##  [unreleased]
 
-## 0.0.4 12/5/25
-    - CHange for matching logic - finding 2 url.py files for example
-    - pass path information to evaluation engine
-    - fallback to alternate paths of exact match does not work
+### Added
 
-## 0.0.3 12/5/25
-    - Incremental improvement to README.md    - Documented OPENAI model selection and defaults
-    - Moved AI Prompt into external file (out of code)
-    - changed filenames to follow "_" convention
-    - Repairs to testing and small improvements
-    
-## 0.0.2 12/4/25
-    - versions
-    - Repo root support via --repo-root
-    - Resolved filepaths
-    - Cleanup for config files and test data
-    - Timestamped CSV output and grading log
-    - Code, configs and keys are not in one place 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+### Removed
+- 
+
+---
+
+## 0.1.0 - 1/8/26 - Initial open-source version
+
+### Added
+- early prototype code and documentation mover without history
+
+---
+
+
+
+## Notes
+
+- Version numbers may be adjusted as the project evolves.
+- Not all internal refactors are listed; only user- or behavior-impacting changes are included.
+
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to semantic versioning where practical.
 
 
 
