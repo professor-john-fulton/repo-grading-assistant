@@ -1,12 +1,12 @@
-# Student Repo Grading Assistant
+#Repo Grader Assistant
 
-Automates grading of student programming assignments stored as repositories using instructor-provided rubrics and AI-assisted evaluation.
+Assists grading of student programming assignments stored as repositories using instructor-provided rubrics and AI-assisted evaluation.
 
 ---
 
 ## Overview
 
-The **Student Repo Grading Assistant** scans a folder of student repositories, collects required submission files, submits their contents for evaluation using an instructor-defined grading template, and produces both per-student feedback and an aggregate CSV summary.
+The **Repo Grading Assistant** scans a folder of student repositories, collects required submission files, submits their contents for evaluation using an instructor-defined grading template, and produces both per-student feedback and an aggregate CSV summary.
 
 The system is designed to be:
 
