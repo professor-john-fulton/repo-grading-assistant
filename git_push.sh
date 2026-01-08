@@ -10,9 +10,11 @@ git add -A
 git commit -m "$message"
 
 # Pull changes from the remote repository
-git pull gitlab main
+#git pull github main
+#git pull gitlab main
 
 # Push the changes to the remote repository
+git push github main
 git push gitlab main
 
 echo "Add, commit, pull, and push done"
