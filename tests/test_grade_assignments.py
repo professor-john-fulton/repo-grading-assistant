@@ -3,7 +3,7 @@
 import sys
 import csv
 import pytest
-from grade_assignments import (
+from src.repogradingassist.grade_assignments import (
     find_file_anywhere,
     combine_submission_text,
     append_csv_row,
@@ -151,7 +151,7 @@ def test_main_dry_run(monkeypatch, temp_project, fake_env):
     config = temp_project["config_file"]
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import grade_assignments
+    import src.repogradingassist.grade_assignments as grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))
@@ -171,7 +171,7 @@ def test_main_validate(monkeypatch, temp_project, fake_env, fake_openai):
     config = temp_project["config_file"]
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import grade_assignments
+    import src.repogradingassist.grade_assignments as grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))
@@ -193,7 +193,7 @@ def test_skip_scored(temp_project, monkeypatch, fake_env):
     (student / "grade_summary.txt").write_text("DONE")
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import grade_assignments
+    import src.repogradingassist.grade_assignments as grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))

@@ -1,4 +1,4 @@
-#Repo Grader Assistant
+# Repo Grading Assistant
 
 Assists grading of student programming assignments stored as repositories using instructor-provided rubrics and AI-assisted evaluation.
 

@@ -22,7 +22,7 @@ import csv
 import json
 from pathlib import Path
 import fnmatch
-
+import re
 import openai
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
@@ -275,7 +275,7 @@ def append_csv_row(csv_path: Path, student_name: str, result_text: str | None, s
     total_points, possible_points, first_deduction = "", "", ""
 
     if result_text:
-        import re
+        
         # Example matches: "Total: 85/100", "Score: 90 out of 100"
         match = re.search(r"(\b\d{1,3}\b)\s*(?:/|out of)\s*(\b\d{1,3}\b)", result_text, re.IGNORECASE)
         if match:

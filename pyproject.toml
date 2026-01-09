@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "repogradingassist"
+version = "0.1.0"
+description = "Assistive Python CLI for instructor review and feedback on student code (human-in-the-loop)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "John Fulton"}]
+dependencies = ["openai==0.28.0", "python-dotenv>=1.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "ruff"]
+
+[project.scripts]
+repogradingassist = "repogradingassist.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
