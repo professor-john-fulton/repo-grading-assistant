@@ -1,0 +1,14 @@
+{% extends 'include.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+
+    <div class="loginContainer">
+        <h1>Register</h1>
+        <form method="post">
+            {% csrf_token %} <!--Protects against Cross-Site Request Forgery attacks -->
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+{% endblock %}

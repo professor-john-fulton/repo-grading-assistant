@@ -1,0 +1,22 @@
+{% extends 'include.html' %}
+{% block title %}Add Coment{% endblock %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="loginContainer">
+            <h1>Add Commnent</h1>
+            <form method="post">
+                {% csrf_token %} <!--Protects against Cross-Site Request Forgery attacks -->
+                {{ form.as_p }}
+                <button type="submit">Add Comment</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="loginContainer">
+            <div>
+                <p>Please login to comment on posts.</p>
+            </div>
+        </div>  
+    {% endif %}
+
+{% endblock %}

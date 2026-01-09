@@ -20,6 +20,8 @@
 
 ### Added
 - early prototype code and documentation mover without history
+- Cleanup of structure, sample files, and QUICKSTART.md
+
 
 ---
 

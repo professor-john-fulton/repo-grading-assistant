@@ -1,0 +1,46 @@
+{% extends 'include.html' %}
+{% block title %}Post Details{% endblock %}
+{% block content %}
+
+    <div class="container">
+        <ul class="contactList">
+            <li class="contactItem">
+                <p class="blogTitle">{{ post.title }}</p>
+                <p class="blogContent">{{ post.content|linebreaksbr }}</p>
+                <p class="blogDetail">Published on {{ post.created_at }} | By: {{ post.author.first_name }} {{ post.author.last_name }}</p>
+                    {% if user.is_authenticated %}
+                        {% if user.id == post.author.id %}
+                            <span class="postControls"><a href="{% url 'post_update' post.pk %}"} class="lotrLink">Edit Post</a> | <a href="{% url 'post_delete' post.pk %}"} class="lotrLink">Delete Post</a></span></p>
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </li>
+        </ul>
+        <h2 class="commentsHeading">Comments:</h2>
+
+        <div class="commentSection">
+            {% for comment in post.comments.all %}
+                <div class="commentBox">
+                    
+                    <div class="commentHeader">
+                        <span class="commentAuthor">{{ comment.name }}</span>
+                        <span class="commentDate"> — {{ comment.created_at|date:"M d, Y, P" }}</span>
+                    </div>
+                    
+                    <p class="commentContent">{{ comment.content }}</p>
+
+                </div>
+            {% empty %}
+                <div class="commentCox">                    
+                    <p class="commentContent">No one has commented yet. Be the first!</p>
+                </div>
+            {% endfor %}
+        </div>
+        {% if user.is_authenticated %}
+            <div class="commentLinkContainer">
+                <a href="{% url 'comment_new' post.pk %}" class="lotrLink">Add a Comment</a>
+            </div>
+        {% endif %}
+    </div>
+    
+{% endblock %}

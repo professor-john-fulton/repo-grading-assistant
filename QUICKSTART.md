@@ -17,3 +17,7 @@ OPENAI_API_KEY="sk-proj-abcdeCuwKVqe06QRruGSLLpBm2EagaUb8CIdRvwxyzwvz20lihld0QJu
     - python -m pip install -U pip setuptools wheel
 
     - pip install -r requirements.txt 
+
+5) Create a ./keys/ directory  at the base level. Use ./docs/examples/grading_key_example.txt to create an example key file
+
+6) in the ./configs/ filder, use ./docs/examples/grading_config_example.json to create an example config file

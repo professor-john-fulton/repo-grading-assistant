@@ -1,0 +1,19 @@
+1. Deductions
+- None
+
+2. Bonus Credit (if any)
+- Commenting (+5): Implemented Comment model, CommentCreateView, and route to add comments to posts, enabling users to comment on blog posts.
+
+3. Strengths
+- Full CRUD for posts is implemented with class-based views and routing, and search by title/content is correctly handled with Q lookups in the HomeView.
+- The project includes responsive CSS with media queries to adapt the navbar and layout on smaller screens, and authentication routes for login/logout and registration are set up.
+
+4. Areas for Improvement
+- Consider adding login requirements (e.g., LoginRequiredMixin) to creation, update, and delete views to prevent anonymous edits.
+- For the profile stretch goal, enhance the profile page to clearly list the logged-in user’s posts in addition to the personal info form.
+
+5. Score Summary
+- Total: 65/60 points (includes 5 bonus)
+
+6. Supportive Closing
+Great work implementing the core features and adding commenting—keep refining with small enhancements like access control and enriched profile pages!

@@ -1,0 +1,15 @@
+{
+  "assignment_pattern": "student_*",
+  "key_file": "grading_key_example.txt",
+  "required_files": [
+    "**/models.py",
+    "**/admin.py",
+    "**/settings.py",
+    "**/views.py",
+    "**/urls.py(2)",
+    "**/*.css"
+  ],
+  "max_score": 60,
+  "language_profile": ["python", "web"],
+  "exclusions":[]
+}

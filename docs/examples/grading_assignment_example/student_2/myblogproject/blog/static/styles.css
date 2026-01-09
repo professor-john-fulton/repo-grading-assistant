@@ -1,0 +1,451 @@
+body {
+    background-color: #2c241b;
+    margin: 0;
+    font-family: serif;
+    box-sizing: border-box;
+}
+
+/* --- Navbar Mobile Responsiveness for small screens--- */
+@media (max-width: 1024px) {
+    
+    /* Stack items vertically */
+    .navbar {
+        flex-direction: column; 
+        align-items: flex-start; /* Aligns content to the left */
+        padding: 10px;
+    }
+
+    /* Stack links and ensure they take full width */
+    .navbarLinks {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        flex-direction: column;
+        width: 100%;
+        gap: 0; 
+    }
+
+    /* Make each link will fill width */
+    .navItem {
+        padding: 10px 0;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+    }
+    
+    /* Remove border from last item 
+    .nav-item:last-child {
+        border-bottom: none;
+    }*/
+    
+    /* Move search bar to a new link and make full width */
+    .navbarSearch {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    /* Adjust Search Input/Button size */
+    .navbarSearch input[type="search"] {
+        flex-grow: 1; /* Makes the input take up most available space */
+    }
+    
+    /* Prevents the button from becoming excessively large */
+    .navbarSearch button {
+        flex-shrink: 0; 
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    
+    /* Ensure logout form button fills the space */
+    .logoutForm {
+        width: 100%;
+    }
+    
+    .logoutButton {
+        width: 100%;
+        text-align: left;
+    }
+}
+/* Navbar Styling for large that 1024px */
+.navbar {
+    display: flex; /* Enables Flexbox layout */
+    justify-content: space-between; /* Pushes content to the ends: links on the left, search on the right */
+    align-items: center; /* Vertically centers the items */
+    background-color: #333; /* Dark background color */
+    padding: 10px 20px;
+    color: white; /* Default text color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+/* --- Styling for the Links Group --- */
+.navbarLinks {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    gap: 20px; /* Space between the links */
+}
+
+.navItem {
+    text-decoration: none;
+    color: white;
+    padding: 5px 10px;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px;
+}
+
+.navItem:hover {
+    background-color: #575757;
+    color: #fff;
+}
+
+/* --- Styling for the Search Form --- */
+.navbarSearch {
+    display: flex;
+    align-items: center;
+}
+
+.navbarSearch input[type="search"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px; /* Rounded on the left */
+    font-size: 14px;
+    outline: none; /* Remove focus outline */
+}
+
+.navbarSearch button {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 8px 15px;
+    background-color: #333; /* Button color matches nav-bar color */
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0; /* Rounded on the right */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s; /* Gives a smooth transition effect on hover */
+}
+
+.navbarSearch button:hover {
+    background-color: #444; /* Button hover color (Lighter) */
+}
+
+/* Used to not disrupt the alignment of other links */
+.logoutForm {
+    display: inline;
+}
+
+/* Buttong appearacne */
+.logoutButton {
+    background: none;
+    border: none;
+    cursor: pointer; 
+    font-family: inherit; 
+    margin: 0;
+    vertical-align: middle; 
+}
+
+/* Main div container style */
+.container {
+    background-color: #f4e4bc;
+    padding: 10px;
+    max-width: 800px;
+    width: 90%;
+    /* Create a soft black outer glow and a wide, subtle brown inner glow for depth. */
+    box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 60px rgba(160, 82, 45, 0.3); /* Used rgba so I can add a transparency effect (0.5) and (0.3) */
+    border-radius: 15px; /* Round the corners*/
+    text-align: left;
+    border: 1px solid #d4c5a0;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+.linkHomeContainer {
+    background-color: #FFFFFF;
+    padding: 10px;
+    max-width: 800px;
+    width: 90%;
+    /* Create a soft black outer glow and a wide, subtle brown inner glow for depth. */
+    box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 60px rgba(160, 82, 45, 0.3); /* Used rgba so I can add a transparency effect (0.5) and (0.3) */
+    border-radius: 15px; /* Round the corners*/
+    text-align: left;
+    border: 1px solid #d4c5a0;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+/* UL style */
+.contactList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual contact item style */
+.contactItem {
+    padding: 15px;
+    transition: background 0.3s; /* Slow the hover effect */
+    
+}
+
+/* Last list item */
+.contactItem:last-child {
+    border-bottom: none; /* Removes the border from the last item in the list */
+}
+
+/* Hover effect for contact items */
+.contactItem:hover {
+    background-color: rgba(74, 59, 42, 0.1); /* Used rgba so I can add a transparency effect (0.1) */
+    border-radius: 15px;
+}
+
+/* Name style */
+.blogTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+/* Title style */
+.blogContent {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 23px;
+    text-align: justify;
+}
+
+/* Email style */
+.blogDetail {
+    font-size: 17px;
+    font-style: italic;
+    border-top: 1px dashed grey;
+    padding-top: 5px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.postControls {
+    margin-top: 15px;
+    display: block;
+    background-color: #fcf8ee;
+    padding: 5px 0 5px 5px;
+    border: 1px solid #736e63;
+    border-radius: 4px;
+}
+
+.loginContainer {
+    background-color: #f4e4bc;
+    padding:30px;
+    max-width: 500px;
+    width: 80%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 60px rgba(160, 82, 45, 0.3); 
+    border-radius: 5px; 
+    border: 1px solid #d4c5a0;
+    margin: 50px auto; 
+    text-align: center; 
+}
+
+.loginContainer h1 {
+    color: #4a3b2a; /* Dark brown color */
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+.loginContainer label {
+    font-weight: bold;
+}
+
+/* Style for the <p> tags generated by form.as_p */
+.loginContainer form p {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+/* Style the input fields */
+.loginContainer input[type="text"],
+.loginContainer input[type="password"],
+.loginContainer input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #d4c5a0;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensures padding doesn't increase total width */
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Style for all textarea elements within the form container */
+.loginContainer textarea {
+    /* Set a specific width */
+    width: 100%; 
+    height: 150px; 
+    box-sizing: border-box; 
+    padding: 10px;
+    border: 1px solid #d4c5a0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #333;
+    resize: vertical; 
+}
+
+.loginContainer button[type="submit"] {
+    background-color: #4a3b2a; /* Dark brown button */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.loginContainer button[type="submit"]:hover {
+    background-color: #5c4b3c; /* Slightly lighter brown on hover */
+}
+
+/* Targets the unordered list (ul) that contains the bullet points */
+.loginContainer ul {
+    text-align: left;
+    margin-left: 0;
+    padding-left: 20px; 
+    width: 100%; 
+}
+
+/* Targets the individual list items (li) */
+.loginContainer ul li {
+    display: list-item; 
+    margin-left: 0; 
+}
+
+.helptext {
+    font-size: 14px;
+}
+
+/* Target the h2 (post title) */
+.loginContainer h2 {
+    text-align: left;
+    font-size: 28px;
+    color: #4a3b2a;
+    margin-bottom: 25px;
+}
+
+/* Target the post content paragraph */
+.loginContainer p {
+    text-align: left;
+    margin-bottom: 15px; /* Add some spacing between paragraphs */
+}
+
+/* Style the published details (author/date) */
+.loginContainer p em {
+    text-align: left;
+    display: block; 
+    margin-top: 20px;
+}
+
+/* Target the link inside the blogTitle paragraph */
+.blogTitle a {
+    color: #4a3b2a; 
+    text-decoration: underline; 
+}
+
+/* Style for visited links */
+.blogTitle a:visited {
+    color: #4a3b2a; /* Example of a slightly muted brown */
+    text-decoration: none;
+}
+
+/* Style on hover */
+.blogTitle a:hover {
+    /* Active color for immediate feedback */
+    color: #6d5843; 
+    text-decoration: underline; 
+}
+
+.commentsHeading {
+    font-size: 20px;
+    color: #2e241c; /* Dark brown text */
+    margin-top: 30px;
+    padding-left: 5px;
+    display: inline-block; /* Only underline the text */
+}
+
+/* Container for all comments */
+.commentSection {
+    padding: 0 10px;
+}
+
+.commentBox {
+    background-color: #fcf8ee; 
+    border: 1px solid #736e63;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Slight lift */
+}
+
+.commentHeader {
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #d4ac00; /* Gold dashed separator */
+    padding-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.commentAuthor {
+    font-weight: bold;
+    color: #2e241c; /* Dark text for the name */
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.commentDate {
+    color: #5d4d3c; /* Subdued color for the date/time */
+}
+
+.commentContent {
+    margin: 0;
+    line-height: 1.6;
+    color: #444;
+}
+
+.no-comments-message {
+    color: #736e63;
+    font-style: italic;
+    padding: 10px;
+}
+
+/* Styling for the Add Comment link */
+.commentLinkContainer {
+    padding: 15px 10px 0 0;
+    text-align: right; /* Align the link to the right */
+}
+
+.lotrLink {
+    text-decoration: none;
+    color: #444; 
+    font-size: 1.1em;
+    font-weight: bold;
+    font-style: normal;
+}
+
+.lotrLink:hover {
+    text-decoration: underline;
+    color: #736e63; /* Darker color on hover */
+    font-style: normal;
+}
+
+.errorlist {
+    color: red;
+}
+
+.linkHome{
+    text-align: center;
+}
+
+.noPosts{
+    text-align: center;
+}
+
+/* Hide the "No Password" text on the profile page */
+#id_password p:first-child {
+    display: none;
+}

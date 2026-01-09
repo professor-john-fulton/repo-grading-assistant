@@ -14,41 +14,50 @@
 ## Manual Tests
 
 ```bash
+
 python grade_assignments.py  \
-  --config configs/lab05_config.json  \
-  --repo-root /D/Exercises/25FA/ITEC660/Lab05  \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
   --dry-run
 
 python grade_assignments.py  \
-  --config configs/lab05_config.json  \
-  --repo-root /D/Exercises/25FA/ITEC660/Lab05  \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
+  --validate \
+  --dry-run
+
+python grade_assignments.py  \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
   --validate
 
 python grade_assignments.py  \
-  --config configs/lab05_config.json  \
-  --repo-root /D/Exercises/25FA/ITEC660/Lab05  \
-  --validate \
-  --dry-run
-
-python grade_assignments.py \
-  --config configs/lab05_config.json  \
-  --repo-root /D/Exercises/25FA/ITEC660/Lab05 \
-  --student lab-5-wmbucha \
-  --dry-run
-
-python grade_assignments.py  \
-  --config configs/lab05_config.json  \
-  --repo-root /D/Exercises/25FA/ITEC660/Lab05  \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
   --validate \
   --skip-scored
 
-python grade_assignments.py  \
-  --config configs/lab05_config.json  \
-  --repo-root /D/Exercises/25FA/ITEC660/Lab05  \
-  --dry-run --validate   --student lab-5-professor-john-fulton
+python grade_assignments.py \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
+  --student student_2 \
+  --dry-run
 
 python grade_assignments.py  \
-  --config configs/lab05_config.json  \
-  --repo-root /D/Exercises/25FA/ITEC660/Lab05  \
-  --student lab-5-professor-john-fulton
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
+  --student student_2 
+
+python grade_assignments.py \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
+  --student student_2 \
+  --dry-run \
+  --validate
+
+python grade_assignments.py \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  
+
+
 ```

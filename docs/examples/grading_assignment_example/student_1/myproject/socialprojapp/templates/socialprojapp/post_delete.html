@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+  <title>Delete Post</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+
+<body>
+  <div class="delete-container">
+    <h2>Are you sure you want to delete post?</h2>
+
+    <div class="delete-post">
+    <p>{{ post.title }}</p>
+    <p>{{ post.content }}</p>
+    </div>
+    <form method="POST" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" class="delete-button">Confirm Delete</button>
+    </form>
+      
+    <a href="{% url 'post_list' %}" class="cancel-button">Cancel</a>
+  </div>
+</body>
+</html>

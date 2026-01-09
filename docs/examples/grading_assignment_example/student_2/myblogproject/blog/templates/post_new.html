@@ -1,0 +1,27 @@
+{% extends 'include.html' %}
+{% block title %}Add a New Post{% endblock %}
+{% block content %}
+
+    <div class="loginContainer">
+        <h1>Add Post</h1>
+        <form method="post">
+            {% csrf_token %}
+
+            <p>
+                {{ form.title.label_tag }}
+                {{ form.title }}
+            </p>
+
+            <p class="content-field">
+                {{ form.content.label_tag }} <br> {{ form.content }} </p>
+
+            <p>
+                {{ form.author.label_tag }}
+                {{ form.author }}
+            </p>
+
+            <button type="submit">Add Post</button>
+        </form>
+    </div>
+
+{% endblock %}

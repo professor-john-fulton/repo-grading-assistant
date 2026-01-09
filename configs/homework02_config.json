@@ -1,8 +1,0 @@
-{
-  "assignment_pattern": "homework-2-*",
-  "key_file": "Homework02-key.txt",
-  "required_files": ["**/index.html", "**/style.css"],
-  "max_score": 30,
-  "language_profile": ["web"],
-  "exclusions": []
-}

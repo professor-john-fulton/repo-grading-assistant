@@ -1,0 +1,48 @@
+{% extends 'include.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    {% if request.GET.q %}
+        <div class="linkHomeContainer">
+            <p class="blogContent linkHome">
+                <a href="{% url 'home' %}" class="lotrLink">Back To Home</a>
+            </p>
+        </div>
+    {% endif %}
+
+    {% for post in object_list %}
+    <div class="container">
+        <ul class="contactList">
+            <li class="contactItem">
+                <p class="blogTitle"><a href="{% url 'post_details' post.pk %}"}>{{ post.title }}</a></p>
+                <p class="blogContent">{{ post.content|linebreaksbr }}</p>
+                <p class="blogDetail">Published on {{ post.created_at }} | By: {{ post.author.first_name }} {{ post.author.last_name }} | Comments: {{ post.comments.count }}
+                    {% if user.is_authenticated %}
+                        {% if user.id == post.author.id %}
+                            <span class="postControls"><a href="{% url 'post_update' post.pk %}"} class="lotrLink">Edit Post</a> | <a href="{% url 'post_delete' post.pk %}"} class="lotrLink">Delete Post</a></span></p>
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </li>
+        </ul>
+    </div>
+    {% empty %}
+        <div class="container">
+            <div class="noPosts">
+                <p>No posts meet your search criteria.</p>
+            </div>
+        </div>  
+    {% endfor %}
+
+    {% if request.GET.q %}
+        <div class="linkHomeContainer">
+            <p class="blogContent linkHome">
+                <a href="{% url 'home' %}" class="lotrLink">Back To Home</a>
+            </p>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+

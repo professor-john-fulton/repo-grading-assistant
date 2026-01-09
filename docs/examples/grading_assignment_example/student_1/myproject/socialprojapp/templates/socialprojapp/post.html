@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social App</title>
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body>
+
+  <h1>Social App</h1>
+    <p><a href="{% url 'post_create' %}" class="new-post-button">New Post</a></p>
+    <form method="GET" action="{% url 'post_list' %}">
+      <input type="text" name="q" placeholder="Search Posts" value="{{ search }}">
+    <button type= "submit" class="search-button">Search</button>
+    </form>
+    <div class="function-links">
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+    {% endif %}
+  </div>
+    {% if posts %}
+        <ul class="post-list">
+        {% for post in posts %}
+            <li>
+                <p class="post-title">{{ post.title }}</p><br>
+                <p>{{ post.content }}</p><br>
+                <a href="{% url 'post_content' post.pk %}">View</a> |
+                <a href="{% url 'post_edit' post.pk %}">Edit</a> |
+                <a href="{% url 'post_delete' post.pk %}">Delete</a> |
+
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Posts</p>
+    {% endif %}
+</body>
+</html>

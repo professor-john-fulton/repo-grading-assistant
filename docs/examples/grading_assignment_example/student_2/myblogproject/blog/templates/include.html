@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}My Blog{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">  
+    </head>
+
+    <body>
+
+        <nav class="navbar">
+            <div class="navbarLinks">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'home' %}" class="navItem">Home</a>
+                    <a href="{% url 'profile' %}" class="navItem">My Profile ({{ user.first_name }} {{ user.last_name }})</a>
+                    <a href="{% url 'post_new' %}" class="navItem">Add Post</a>
+                    <form class="logoutForm" action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="navItem logoutButton">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'register' %}" class="navItem">Register</a>
+                    <a href="{% url 'login' %}" class="navItem">Login</a>
+                {% endif %}
+            </div>
+
+            {% if user.is_authenticated %}
+                <form class="navbarSearch" action="{% url 'home' %}" method="get">
+                    <input type="search" placeholder="Search Blog..." name="q" 
+                        {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %}>
+                    <button type="submit">Search</button>
+                </form>
+            {% endif %}
+        </nav>
+
+        {% block content %}
+        
+        
+        {% endblock %}
+
+    <body>
+</html>

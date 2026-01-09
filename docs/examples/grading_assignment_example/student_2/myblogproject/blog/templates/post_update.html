@@ -1,0 +1,39 @@
+{% extends 'include.html' %}
+{% block title %}Post Edit{% endblock %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if user.id == post.author.id %}
+            <div class="loginContainer">
+                <h1>Edit Post</h1>
+                <form method="post">
+                    {% csrf_token %} <!--Protects against Cross-Site Request Forgery attacks -->
+                    <p>
+                        {{ form.title.label_tag }}
+                        {{ form.title }}
+                    </p>
+
+                    <p class="content-field">
+                        {{ form.content.label_tag }} <br> {{ form.content }} </p>
+                    <button type="submit">Update Post</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="loginContainer">
+                <div>
+                    <p>You do not have permission to edit this post.</p>
+                </div>
+            </div>            
+        {% endif %}
+    {% else %}
+        <div class="loginContainer">
+            <div>
+                <p>You do not have permission to edit this post.</p>
+            </div>
+        </div>  
+    {% endif %}
+
+{% endblock %}
+
+
+
