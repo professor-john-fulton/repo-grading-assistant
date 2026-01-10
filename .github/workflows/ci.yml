@@ -41,3 +41,8 @@ jobs:
           OPENAI_API_KEY: "ci-placeholder"
         run: |
           python -m pytest -q
+
+      - name: Intentional failure (test)
+        run: |
+          echo "Forcing failure to verify CI"
+          exit 1
