@@ -1,7 +1,5 @@
 from django.urls import path
 from .views import RegsterView, ProfileView, PasswordsChangeView
-from django.contrib.auth import views as auth_views
-from django.urls import reverse_lazy
 from . import views
 
 # Define the URL patterns for the accounts app
