@@ -46,3 +46,8 @@ jobs:
         run: |
           echo "Forcing failure to verify CI"
           exit 1
+
+      - name: Intentional failure (test)
+        run: |
+          echo "Forcing failure to verify CI"
+          exit 1
