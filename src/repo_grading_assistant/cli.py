@@ -2,7 +2,6 @@
 #  src/repo-grading-assistant/cli.py
 """Command-line interface for Repo Grading Assistant."""
 
-import argparse
 from repo_grading_assistant.grade_assignments import main as run_grader
 
 def main() -> None:

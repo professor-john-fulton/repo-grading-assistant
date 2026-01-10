@@ -854,7 +854,7 @@ def main() -> None:
 
         logging.info("---- VALIDATION START ----")
         logging.info(f"Config OK: {args.config}")
-        logging.info(f"API key detected: YES")
+        logging.info("API key detected: YES")
         logging.info(f"Key file exists: {grading_key_file}")
         logging.info(f"Model configured: {model}")
         logging.info(f"First matching folder: {first.name}")

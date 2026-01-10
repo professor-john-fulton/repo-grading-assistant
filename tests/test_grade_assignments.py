@@ -2,7 +2,6 @@
 
 import sys
 import csv
-from pathlib import Path
 
 from src.repo_grading_assistant.grade_assignments import (
     find_file_anywhere,
@@ -19,9 +18,9 @@ from src.repo_grading_assistant.grade_assignments import (
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
 try:
     # openai>=1.0
-    from openai import APIError, RateLimitError, APITimeoutError, APIConnectionError
+    from openai import APITimeoutError
 except Exception:  # openai<1.0 fallback
-    from openai.error import APIError, RateLimitError, Timeout, APIConnectionError
+    from openai.error import Timeout
     APITimeoutError = Timeout
 
 
