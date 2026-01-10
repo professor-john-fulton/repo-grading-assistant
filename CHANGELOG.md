@@ -22,6 +22,9 @@
 - Early prototype code and documentation mover without history
 - Cleanup of structure, sample files, and QUICKSTART.md
 - Refactored to installable package with pipx
+- Documentation (License, Security, Code of Conduct, etc)
+- Added tests
+
 
 
 ---

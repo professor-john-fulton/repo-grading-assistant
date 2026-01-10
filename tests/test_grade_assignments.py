@@ -2,6 +2,7 @@
 
 import sys
 import csv
+from pathlib import Path
 
 from src.repo_grading_assistant.grade_assignments import (
     find_file_anywhere,
@@ -9,6 +10,10 @@ from src.repo_grading_assistant.grade_assignments import (
     append_csv_row,
     write_grade_summary,
     grade_submission,
+    parse_rule,
+    find_all_by_pattern,
+    find_with_escalation,
+    is_excluded,
 )
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
@@ -220,5 +225,101 @@ def test_skip_scored(temp_project, monkeypatch, fake_env):
         csv_text = csv_path.read_text(encoding="utf-8")
         assert student.name not in csv_text
         
+def test_find_all_by_pattern_deep_glob_and_exclusions(tmp_path):
+    root = tmp_path
+
+    # included
+    (root / "a" / "b").mkdir(parents=True)
+    f1 = root / "a" / "b" / "main.py"
+    f1.write_text("print('ok')", encoding="utf-8")
+
+    # excluded directory
+    (root / ".venv" / "x").mkdir(parents=True)
+    f2 = root / ".venv" / "x" / "main.py"
+    f2.write_text("print('no')", encoding="utf-8")
+
+    matches = find_all_by_pattern(root, "**/main.py", exclusions=[".venv"])
+    rels = {m.relative_to(root).as_posix() for m in matches}
+
+    assert "a/b/main.py" in rels
+    assert ".venv/x/main.py" not in rels
+
+def test_find_with_escalation_path_then_basename_then_fuzzy(tmp_path):
+    base = tmp_path
+    (base / "app").mkdir()
+    real = base / "app" / "urls.py"
+    real.write_text("# urls", encoding="utf-8")
+
+    # Phase 1a: exact-path match
+    matches, escalation = find_with_escalation(base, "app/urls.py", exclusions=[], needed=1)
+    assert len(matches) == 1
+    assert matches[0] == real
+    assert escalation == "exact-path"
+
+    # Path not found -> fallback to basename (Phase 1b)
+    matches, escalation = find_with_escalation(base, "missingdir/urls.py", exclusions=[], needed=1)
+    assert len(matches) == 1
+    assert matches[0] == real
+    assert escalation == "exact-name"
+
+    # Fuzzy fallback: request urls.py but only url.py exists
+    (base / "typos").mkdir()
+    typo = base / "typos" / "url.py"
+    typo.write_text("# typo", encoding="utf-8")
+
+    # Use a fresh base dir to avoid exact-name hits from urls.py
+    base2 = tmp_path / "base2"
+    base2.mkdir()
+    (base2 / "typos").mkdir()
+    typo2 = base2 / "typos" / "url.py"
+    typo2.write_text("# typo", encoding="utf-8")
+
+    matches, escalation = find_with_escalation(base2, "urls.py", exclusions=[], needed=1)
+    assert len(matches) >= 1
+    assert matches[0].name == "url.py"
+    assert escalation == "fuzzy"
+
+def test_is_excluded_wildcard_and_ancestor_dir(tmp_path):
+    root = tmp_path
+
+    # wildcard exclusion: anything under .venv
+    (root / ".venv" / "Lib").mkdir(parents=True)
+    p = root / ".venv" / "Lib" / "site.py"
+    p.write_text("x", encoding="utf-8")
+    assert is_excluded(p, exclusions=[".venv"], root=root) is True
+
+    # ancestor directory exclusion: node_modules anywhere in path
+    (root / "web" / "node_modules" / "pkg").mkdir(parents=True)
+    q = root / "web" / "node_modules" / "pkg" / "index.js"
+    q.write_text("y", encoding="utf-8")
+    assert is_excluded(q, exclusions=["node_modules"], root=root) is True
+
+    # non-excluded normal file
+    (root / "src").mkdir()
+    r = root / "src" / "main.py"
+    r.write_text("z", encoding="utf-8")
+    assert is_excluded(r, exclusions=["node_modules", ".venv"], root=root) is False
+
+def test_parse_rule_edge_cases():
+    # exact count in current implementation: (2) means "at least 2"
+    pattern, mn, mx = parse_rule("urls.py(2)")
+    assert pattern == "urls.py"
+    assert mn == 2 and mx == float("inf")
+
+    # optional range
+    pattern, mn, mx = parse_rule("README.md(0..1)")
+    assert pattern == "README.md"
+    assert mn == 0 and mx == 1
+
+    # unbounded max
+    pattern, mn, mx = parse_rule("*.png(0..*)")
+    assert pattern == "*.png"
+    assert mn == 0 and mx == float("inf")
+
+    # default
+    pattern, mn, mx = parse_rule("models.py")
+    assert pattern == "models.py"
+    assert mn == 1 and mx == 1
+
 # --------------------------------------------------------------------
 # End of tests/test_grade_assignments.py    

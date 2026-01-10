@@ -1,14 +1,15 @@
-# src/repo-grading-assistant/grade_assignments.py
+# src/repo_grading_assistant/grade_assignments.py
 
 """
-Student Repo Grading Assistant
+Repo Grading Assistant
 
 Automates grading of student repositories using an instructor-supplied
 grading key and OpenAI’s API.
 
-See docs/architecture.md for design details.
-See README.md for usage.
+See QUICKSTART.md and README.md for usage.
 """
+
+__version__ = "0.1.0"
 
 import argparse
 import logging
@@ -60,7 +61,7 @@ def setup_logging() -> None:
     console.setLevel(logging.INFO)
     console.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
     logging.getLogger("").addHandler(console)
-    logging.info(f"Student Repo Grading Assistant v{__version__}")
+    logging.info(f"Repo Grading Assistant v {__version__}")
     logging.info(f"Logging initialized → {log_file}")
 
 
@@ -825,7 +826,7 @@ def main() -> None:
     exclusions.extend(base_exclusions)
 
     # gpt-5 is the backup value in case nothing is specified in global config,
-    model = global_cfg.get("model", "gpt-5")
+    model = cfg.get("model") or global_cfg.get("model", "gpt-5")
 
     dry_run = args.dry_run 
 

@@ -214,7 +214,7 @@ EXAMPLE USAGE
 
 Dry run (safe test):
 
-- repo-grading-assistant--config configs/lab5.json --repo-root D:/Submissions --dry-run
+- repo-grading-assistant --config configs/lab5.json --repo-root D:/Submissions --dry-run
 
 Validate one student:
 - repo-grading-assistant --config configs/lab5.json --repo-root D:/Submissions --validate
@@ -283,8 +283,6 @@ Add example config:
 
 ## Documentation
 
-- Architecture: `docs/architecture.md`
-- Prompt system: `docs/prompts.md`
 - Testing: `docs/testing.md`
 
 ---
@@ -292,7 +290,7 @@ Add example config:
 ## License
 
 This project is open-source.  
-License selection is pending.
+MIT License
 
 ---
 
