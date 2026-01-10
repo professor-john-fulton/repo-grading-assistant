@@ -24,6 +24,7 @@
 - Refactored to installable package with pipx
 - Documentation (License, Security, Code of Conduct, etc)
 - Added tests
+-
 
 
 
