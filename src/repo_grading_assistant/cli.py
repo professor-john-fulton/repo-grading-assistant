@@ -1,13 +1,9 @@
 # !/usr/bin/env python3
-#  src/repogradingassist/cli.py
+#  src/repo-grading-assistant/cli.py
 """Command-line interface for Repo Grading Assistant."""
 
-
 import argparse
-from repogradingassist.grade_assignments import main as run_grader
-
-
-from repogradingassist.grade_assignments import main as run_grader
+from repo_grading_assistant.grade_assignments import main as run_grader
 
 def main() -> None:
     # Delegate all argument parsing to grade_assignments.py

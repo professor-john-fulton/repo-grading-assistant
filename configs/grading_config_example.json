@@ -1,6 +1,6 @@
 {
   "assignment_pattern": "lab-5-*",
-  "key_file": "Lab05-key.txt",
+  "grading_key_file": "Lab05-key.txt",
   "required_files": [
     "**/models.py",
     "**/admin.py",

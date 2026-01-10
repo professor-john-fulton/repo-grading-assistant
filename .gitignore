@@ -2,6 +2,13 @@
 keys/
 tests/coverage_html/
 tests/test_run.log
+logs/
+# Grading outputs (never commit)
+grade_summary.txt
+**/grade_summary.txt
+**/grading_summary.csv
+**/grading_summary*.csv
+**/grading_summary.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

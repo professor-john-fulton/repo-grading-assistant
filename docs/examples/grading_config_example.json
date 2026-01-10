@@ -1,6 +1,7 @@
 {
+  "title": "docs/examples/grading_config_example.json",
   "assignment_pattern": "student_*",
-  "key_file": "grading_key_example.txt",
+  "grading_key_file": "grading_key_example.txt",
   "required_files": [
     "**/models.py",
     "**/admin.py",

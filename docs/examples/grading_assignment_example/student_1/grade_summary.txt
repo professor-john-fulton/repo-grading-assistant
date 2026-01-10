@@ -5,15 +5,13 @@
 - None
 
 3. Strengths
-- Full authentication flow (register, login, logout) is implemented using Django’s auth system and correctly wired in urls.py. 
-- Complete CRUD for blog posts with a working search by title or content is present, and the simple styling will render responsively by default.
+- Authentication (register, login, logout) is implemented using Django’s auth system and correctly wired in the URL configuration. Full CRUD for posts and a functional search across both title and content are present and clearly organized in the views.
 
 4. Areas for Improvement
-- Consider combining the search filters with Q objects and calling distinct() to avoid potential duplicate results when a query matches both title and content. 
-- To extend functionality, add stretch features like user profiles and commenting to increase engagement and demonstrate deeper Django proficiency.
+- Consider associating posts with the authenticated user (e.g., a ForeignKey to User) and restricting edit/delete operations to the owner for better access control. Add explicit responsive layout techniques (media queries or a CSS framework) and ensure templates adapt well to small screens to improve user experience.
 
 5. Score Summary
 - Total: 60/60 points
 
 6. Supportive Closing
-Great job delivering a complete, functional blog app—nice work!
+Great work implementing all core features—keep building on this solid foundation!

@@ -21,3 +21,76 @@ OPENAI_API_KEY="sk-proj-abcdeCuwKVqe06QRruGSLLpBm2EagaUb8CIdRvwxyzwvz20lihld0QJu
 5) Create a ./keys/ directory  at the base level. Use ./docs/examples/grading_key_example.txt to create an example key file
 
 6) in the ./configs/ filder, use ./docs/examples/grading_config_example.json to create an example config file
+
+---------------------------
+Edit This
+---------------------------
+
+Here’s a clean, fool-proof Quick Start that avoids every issue you just hit:
+
+RepoGraderAssist – Quick Start
+1) Clone repo
+git clone <repo-url>
+cd repo-grading-assistant
+
+2) Create virtual environment
+
+(Never rename the folder after this step)
+
+Windows
+
+py -3 -m venv .venv
+.venv\Scripts\activate
+
+
+Mac / Linux
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+3) Upgrade pip (safe launcher method)
+python -m pip install --upgrade pip
+
+4) Install tool (editable)
+python -m pip install -e .
+
+5) Run
+repo-grading-assistant
+
+🔒 Critical rules (put in bold in docs)
+
+DO NOT rename the project folder after creating .venv
+
+Always use python -m pip, not pip
+
+Activate venv every session
+
+Recovery section (short but powerful)
+
+If you renamed/moved the folder:
+
+deactivate
+rm -rf .venv
+python -m venv .venv
+source .venv/Scripts/activate   # or bin/activate
+python -m pip install -e .
+
+Optional verification
+which python
+python -c "import sys; print(sys.executable)"
+repo-grading-assistant --help
+
+Why this matters (1-liner)
+
+Editable installs hard-code absolute paths.
+Renaming breaks launchers.
+
+Mentor suggestion
+
+Add a "Common Errors" section with:
+
+Fatal error in launcher
+
+PATH conflicts
+
+Multiple Python installs

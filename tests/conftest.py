@@ -48,7 +48,7 @@ def temp_project(tmp_path):
         "assignment_name": "Homework 6",
         "points_possible": 100,
         "rubric_path": "rubric.txt",
-        "key_file": "key.txt",
+        "grading_key_file": "../keys/key.txt",
         "required_files": ["main.py", "readme.txt"],
         "model": "gpt-4o-mini"
     }))
@@ -65,8 +65,8 @@ def temp_project(tmp_path):
     keys_dir = root / "keys"
     keys_dir.mkdir(parents=True, exist_ok=True)
 
-    key_file = keys_dir / "key.txt"
-    key_file.write_text("Answer key content", encoding="utf-8")
+    grading_key_file = keys_dir / "key.txt"
+    grading_key_file.write_text("Answer key content", encoding="utf-8")
 
     return {
         "root": root,
@@ -76,7 +76,7 @@ def temp_project(tmp_path):
         "system_prompt_file": system_prompt_file,
         "config_file": config_file,
         "student_dir": student_dir,
-        "key_file": key_file,
+        "grading_key_file": grading_key_file,
     }
 
 

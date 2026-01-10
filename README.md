@@ -1,3 +1,5 @@
+README.md
+
 # Repo Grading Assistant
 
 Assists grading of student programming assignments stored as repositories using instructor-provided rubrics and AI-assisted evaluation.
@@ -30,10 +32,13 @@ The system is designed to be:
 
 ```bash
 git clone <repository-url>
-cd student_repo_grading_assistant
-python -3.11 -m venv .venv
-Activate the environment:
+cd repo-grading-assistant
+python -m venv .venv   ( macOS / Linux)
+  -or-
+py -3.11 -m venv .venv   # Windows
 ```
+Activate the environment:
+
 
 ### Windows
 
@@ -69,17 +74,25 @@ export OPENAI_API_KEY="your-key-here"
 ### Dry Run (no API calls)
 
 ```bash
-python grade_assignments.py --config configs/lab5.json --repo-root /path/to/repos --dry-run
+repo-grading-assistant \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
+  --dry-run
 ```
 ### Validate Configuration
 
 ```bash
-python grade_assignments.py --config configs/lab5.json --repo-root /path/to/repos --validate
+repo-grading-assistant \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  \
+  --validate 
 ```
 ### Run Full Grading
 
 ```bash
-python grade_assignments.py --config configs/lab5.json --repo-root /path/to/repos
+repo-grading-assistant \
+  --config docs/examples/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example  
 ```
 
 ## Configuration Format
@@ -91,7 +104,7 @@ Each assignment uses a JSON configuration file.
 
 {
   "assignment_pattern": "lab-5-*",
-  "key_file": "Lab05-key.txt",
+  "grading_key_file": "Lab05-key.txt",
   "required_files": ["models.py", "views.py", "*.css"],
   "max_score": 60,
   "language_profile": ["python", "web"],
@@ -104,7 +117,7 @@ Each assignment uses a JSON configuration file.
 Field	Purpose
 
   - assignment_pattern -	Pattern for identifying student directories
-  - key_file	- Assignment grading template
+  - grading_key_file	- Assignment grading template
   - required_files	- Files or global patterns with optional cardinality constraints with fallback to filename discovery if paths do not exist. Wildcards are evaluated using true global patterns (**, *, ?), not simple suffix checks.
   - max_score - score for this assignment if there are no deductions
   - language_profile - contaions "standard" exclusions (ignored, ungraded files and directories) for various languages/environments
@@ -160,7 +173,7 @@ The engine builds each prompt dynamically using:
 
 ## Command Line Options
 ```bash
-python grade_assignments.py --help
+repo-grading-assistant --help
 ```
 
 REQUIRED OPTIONS:
@@ -201,13 +214,13 @@ EXAMPLE USAGE
 
 Dry run (safe test):
 
-- python grade_assignments.py --config configs/lab5.json --repo-root D:/Submissions --dry-run
+- repo-grading-assistant--config configs/lab5.json --repo-root D:/Submissions --dry-run
 
 Validate one student:
-- python grade_assignments.py --config configs/lab5.json --repo-root D:/Submissions --validate
+- repo-grading-assistant --config configs/lab5.json --repo-root D:/Submissions --validate
 
 Full grading run:
-- python grade_assignments.py --config configs/lab5.json --repo-root D:/Submissions
+- repo-grading-assistant --config configs/lab5.json --repo-root D:/Submissions
 
 
 ------------------------------------------------------------
@@ -218,7 +231,7 @@ CONFIGURATION FILE SETTINGS  (JSON)
       # Glob pattern for student submission folders.
       # Example: "lab-3-*", "homework-5-*"
 
-  "key_file": "Homework05-key.docx",
+  "grading_key_file": "Homework05-key.docx",
       # Path to the answer key or rubric file used for scoring.
       # May be DOCX or TXT; content will be read as text.
       # Each requirement to be scored should be marked "*** +3 points"

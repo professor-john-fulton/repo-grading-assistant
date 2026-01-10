@@ -2,8 +2,8 @@
 
 import sys
 import csv
-import pytest
-from src.repogradingassist.grade_assignments import (
+
+from src.repo_grading_assistant.grade_assignments import (
     find_file_anywhere,
     combine_submission_text,
     append_csv_row,
@@ -102,12 +102,12 @@ def test_write_grade_summary_overwrites(temp_project):
 def test_grade_submission_creates_summary(temp_project, fake_env, fake_openai):
     student_dir = temp_project["student_dir"]
 
-    key_file = temp_project["key_file"]   # <-- use the key file, not config
+    grading_key_file = temp_project["grading_key_file"]   # <-- use the key file, not config
     max_score = 60                        # or temp_project["max_score"] if you store it
 
     result = grade_submission(
         student_dir,
-        key_file,
+        grading_key_file,
         ["main.py", "readme.txt"],
         "gpt-4o-mini",
         max_score,
@@ -122,12 +122,12 @@ def test_grade_submission_creates_summary(temp_project, fake_env, fake_openai):
 
 def test_grade_submission_logs(temp_project, fake_env, fake_openai, sample_log):
     student_dir = temp_project["student_dir"]
-    key_file = temp_project["key_file"]
+    grading_key_file = temp_project["grading_key_file"]
     max_score = 60
 
     _ = grade_submission(
         student_dir,
-        key_file,
+        grading_key_file,
         ["main.py", "readme.txt"],
         "gpt-4o-mini",
         max_score,
@@ -151,7 +151,7 @@ def test_main_dry_run(monkeypatch, temp_project, fake_env):
     config = temp_project["config_file"]
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import src.repogradingassist.grade_assignments as grade_assignments
+    import src.repo_grading_assistant.grade_assignments as grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))
@@ -171,7 +171,7 @@ def test_main_validate(monkeypatch, temp_project, fake_env, fake_openai):
     config = temp_project["config_file"]
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import src.repogradingassist.grade_assignments as grade_assignments
+    import src.repo_grading_assistant.grade_assignments as grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))
@@ -193,7 +193,7 @@ def test_skip_scored(temp_project, monkeypatch, fake_env):
     (student / "grade_summary.txt").write_text("DONE")
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import src.repogradingassist.grade_assignments as grade_assignments
+    import src.repo_grading_assistant.grade_assignments as grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))

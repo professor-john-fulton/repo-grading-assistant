@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
+# src/repo-grading-assistant/grade_assignments.py
 
-# grade_assignments.py
 """
 Student Repo Grading Assistant
 
@@ -10,7 +9,6 @@ grading key and OpenAI’s API.
 See docs/architecture.md for design details.
 See README.md for usage.
 """
-
 
 import argparse
 import logging
@@ -24,6 +22,7 @@ from pathlib import Path
 import fnmatch
 import re
 import openai
+import difflib
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
 try:
@@ -39,7 +38,7 @@ try:
 except ModuleNotFoundError:
     pass
 
-__version__ = "0.0.6"
+__version__ = "0.1"
 
 
 # ---------------------------------------------------------------------------
@@ -88,8 +87,7 @@ def load_global_config() -> dict:
 
     This must NEVER cause the program to exit; it only provides defaults.
     """
-    project_root = Path(__file__).resolve().parent
-    path = project_root / "configs" / "global_config.json"
+    path = Path("configs") / "global_config.json"
 
     if not path.exists():
         logging.info(f"No global config found at {path}; using built-in defaults.")
@@ -164,8 +162,7 @@ def find_file_anywhere(base_dir: Path, filename: str, exclusions: list[str]) -> 
     Allows minor variations in file name (e.g., singular vs plural, or one-character differences).
     Returns the first match found, or None if not found.
     """
-    import difflib
-
+    
     target = filename.lower()
     candidates = [
         p for p in base_dir.rglob("*")
@@ -295,6 +292,40 @@ def append_csv_row(csv_path: Path, student_name: str, result_text: str | None, s
             
         writer.writerow([timestamp, __version__, student_name, status, total_points, possible_points, first_deduction])
 
+def resolve_key_path(cfg: dict) -> Path:
+    """
+    Resolve the grading key path.
+
+      - grading_key_file 
+
+    If relative, resolves relative to CWD (where user runs the CLI).
+    """
+    key_value = cfg.get("grading_key_file") 
+    if not key_value:
+        logging.error("Config missing grading key path. Expected 'grading_key_file'.")
+        sys.exit(1)
+
+    p = Path(key_value).expanduser()
+    if not p.is_absolute():
+        p = (Path.cwd() / p).resolve()
+    return p
+
+def resolve_grading_key_path(cfg: dict, config_path: Path) -> Path:
+    """
+    Resolve grading key path:
+      - absolute: use as-is
+      - relative: resolve relative to the config file's directory
+    Supports:
+      - cfg["grading_key_file"] 
+
+    """
+    key_value = cfg.get("grading_key_file") 
+    if not key_value:
+        logging.error("Config missing 'grading_key_file' .")
+        sys.exit(1)
+
+    p = Path(str(key_value)).expanduser()
+    return p.resolve() if p.is_absolute() else (config_path.parent / p).resolve()
 
 # ---------------------------------------------------------------------------
 # Bonus Inference (Option C+ : behavior only, no points)
@@ -391,16 +422,9 @@ def infer_bonus_if_needed(result_text: str, key_text: str, student_name: str | N
 
     return result_text
 
-
-
-
-
-
 # ---------------------------------------------------------------------------
 # Rule Parsing
 # ---------------------------------------------------------------------------
-
-import re
 
 def parse_rule(rule: str):
     """
@@ -454,12 +478,9 @@ def find_all_by_pattern(root: Path, pattern: str, exclusions: list[str]) -> list
 
     return matches
 
-
 # ---------------------------------------------------------------------------
 # Escalating filename search (recursive + fuzz)
 # ---------------------------------------------------------------------------
-
-import difflib
 
 def find_with_escalation(base_dir: Path, pattern: str, exclusions: list[str], needed: int):
     """
@@ -470,7 +491,6 @@ def find_with_escalation(base_dir: Path, pattern: str, exclusions: list[str], ne
       Phase 2:  Pattern expansion (e.g., urls.py -> urls.*)
       Phase 3:  Fuzzy fallback (e.g., url.py)
     """
-    import difflib
 
     results = []
 
@@ -570,7 +590,6 @@ def enforce_bonus_alignment(result_text: str) -> str:
 
     return result_text
 
-
 def is_effectively_empty(student_dir: Path, exclusions: list[str]) -> bool:
     """
     Treat as empty if:
@@ -589,7 +608,6 @@ def is_effectively_empty(student_dir: Path, exclusions: list[str]) -> bool:
     non_readme = [p for p in readable_files if p.name.lower() != "readme.md"]
     return len(non_readme) == 0
 
-
 def enforce_base_max(result_text: str, base_max: int) -> str:
     """
     Force denominator to remain equal to base_max.
@@ -607,7 +625,7 @@ def enforce_base_max(result_text: str, base_max: int) -> str:
 
 def grade_submission(
     student_dir: Path,
-    key_file: Path,
+    grading_key_file: Path,
     required_files: list[str],
     model: str,
     max_score: int,
@@ -620,9 +638,9 @@ def grade_submission(
     Returns the plain-text feedback (or None on error).
     """
     try:
-        key_text = key_file.read_text(encoding="utf-8", errors="ignore")
+        key_text = grading_key_file.read_text(encoding="utf-8", errors="ignore")
     except Exception as e:
-        logging.error(f"Cannot read key file '{key_file}': {e}")
+        logging.error(f"Cannot read key file '{grading_key_file}': {e}")
         return None
 
     combined_text = combine_submission_text(student_dir, required_files, exclusions)
@@ -757,15 +775,15 @@ def main() -> None:
     logging.info(f"[CONFIG] Base max_score = {max_score}")
 
 
-    # Resolve system prompt path
-    system_prompt_path = Path(args.system_prompt)
+    # Resolve system prompt path (absolute or relative-to-CWD)
+    system_prompt_path = Path(args.system_prompt).expanduser()
 
     if not system_prompt_path.is_absolute():
-        project_root = Path(__file__).resolve().parent
-        system_prompt_path = (project_root / system_prompt_path).resolve()
+        system_prompt_path = (Path.cwd() / system_prompt_path).resolve()
 
     if not system_prompt_path.exists():
         logging.error(f"System prompt file not found: {system_prompt_path}")
+        logging.error("Tip: pass an absolute path or a path relative to the folder you run repo-grading-assistant from.")
         sys.exit(1)
 
     system_prompt = system_prompt_path.read_text(encoding="utf-8")
@@ -773,12 +791,16 @@ def main() -> None:
 
     assignment_pattern = cfg.get("assignment_pattern", "homework-*")
 
+    config_path = Path(args.config).expanduser().resolve()
+    cfg = load_config(str(config_path))
 
-    # Resolve key file from ./keys directory (project repo, next to this script)
-    project_root = Path(__file__).resolve().parent
-    keys_dir = project_root / "keys"
-    key_file = (keys_dir / cfg["key_file"]).resolve()
+    grading_key_file = resolve_grading_key_path(cfg, config_path)
+    logging.info(f"[CONFIG] Grading key → {grading_key_file}")
 
+    if not grading_key_file.exists():
+        logging.error(f"Grading key file not found: {grading_key_file}")
+        logging.error("Tip: set 'grading_key_file' to an absolute path, or a path relative to the config.json file.")
+        sys.exit(1)
 
     required_files = list(cfg.get("required_files", []))
 
@@ -814,12 +836,6 @@ def main() -> None:
         sys.exit(1)
 
     openai.api_key = api_key
-
-    if not key_file.exists():
-        logging.error(f"Key file not found in keys/: {key_file}")
-        logging.error("Expected directory structure:")
-        logging.error("  <project_root>/keys/<key_file>")
-        sys.exit(1)
 
     # Collect student directories from repo root
     root = repo_root
@@ -860,7 +876,7 @@ def main() -> None:
         logging.info("---- VALIDATION START ----")
         logging.info(f"Config OK: {args.config}")
         logging.info(f"API key detected: YES")
-        logging.info(f"Key file exists: {key_file}")
+        logging.info(f"Key file exists: {grading_key_file}")
         logging.info(f"Model configured: {model}")
         logging.info(f"First matching folder: {first.name}")
 
@@ -899,7 +915,7 @@ def main() -> None:
         logging.info(f"[VALIDATE] Grading ONLY: {first.name} ...")
         result_text = grade_submission(
             first, 
-            key_file,
+            grading_key_file,
             required_files, 
             model,
             max_score,
@@ -949,7 +965,7 @@ def main() -> None:
         logging.info(f"Grading {sdir.name} ...")
         result_text = grade_submission(
             sdir, 
-            key_file,
+            grading_key_file,
             required_files, 
             model,
             max_score,

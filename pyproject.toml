@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "repogradingassist"
+name = "repo-grading-assistant"
 version = "0.1.0"
 description = "Assistive Python CLI for instructor review and feedback on student code (human-in-the-loop)."
 readme = "README.md"
@@ -16,7 +16,7 @@ dependencies = ["openai==0.28.0", "python-dotenv>=1.0.0"]
 dev = ["pytest", "pytest-cov", "ruff"]
 
 [project.scripts]
-repogradingassist = "repogradingassist.cli:main"
+repo-grading-assistant = "repo_grading_assistant.cli:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
