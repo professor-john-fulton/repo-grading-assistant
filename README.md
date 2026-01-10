@@ -298,9 +298,3 @@ MIT License
 
 See `CONTRIBUTING.md` for development guidelines.
 
----
-
-## Status
-
-Active development.  
-Initial open-source release planned.

@@ -1,20 +1,27 @@
 #!/bin/bash
+# A simple script to add, commit, pull, and push changes to remote Git repositories.
+# Usage: ./git_push.sh
 
-# Get the commit message from the user
+set -e
+
+git status
+
 read -p "Enter commit message: " message
 
-# Add all changes to the staging area
 git add -A
-
-# Commit the changes with the provided message
 git commit -m "$message"
 
-# Pull changes from the remote repository
-#git pull github main
-#git pull gitlab main
-
-# Push the changes to the remote repository
+# Push code
 git push github main
 git push gitlab main
 
-echo "Add, commit, pull, and push done"
+# Ask about tagging
+read -p "Create release tag? (y/n): " tagchoice
+if [[ $tagchoice == "y" ]]; then
+  read -p "Tag name (ex: v0.1.0): " tagname
+  git tag -a $tagname -m "Release $tagname"
+  git push github --tags
+  git push gitlab --tags
+fi
+
+echo "Done ✔"
