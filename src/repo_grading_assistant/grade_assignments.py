@@ -27,10 +27,9 @@ import difflib
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
 try:
-    # openai>=1.0
-    from openai import APIError, RateLimitError, APITimeoutError, APIConnectionError
+    from openai import APIError, APITimeoutError
 except Exception:  # openai<1.0 fallback
-    from openai.error import APIError, RateLimitError, Timeout, APIConnectionError
+    from openai.error import APIError, Timeout
     APITimeoutError = Timeout
 
 try:
@@ -38,9 +37,6 @@ try:
     load_dotenv()
 except ModuleNotFoundError:
     pass
-
-__version__ = "0.1"
-
 
 # ---------------------------------------------------------------------------
 # Logging Setup
@@ -292,24 +288,6 @@ def append_csv_row(csv_path: Path, student_name: str, result_text: str | None, s
             writer.writerow(["Timestamp", "version", "Student Directory", "Status", "Points Earned", "Points Possible", "First Deduction"])
             
         writer.writerow([timestamp, __version__, student_name, status, total_points, possible_points, first_deduction])
-
-def resolve_key_path(cfg: dict) -> Path:
-    """
-    Resolve the grading key path.
-
-      - grading_key_file 
-
-    If relative, resolves relative to CWD (where user runs the CLI).
-    """
-    key_value = cfg.get("grading_key_file") 
-    if not key_value:
-        logging.error("Config missing grading key path. Expected 'grading_key_file'.")
-        sys.exit(1)
-
-    p = Path(key_value).expanduser()
-    if not p.is_absolute():
-        p = (Path.cwd() / p).resolve()
-    return p
 
 def resolve_grading_key_path(cfg: dict, config_path: Path) -> Path:
     """
