@@ -2,7 +2,7 @@ README.md
 
 # Repo Grading Assistant
 
-Assists grading of student programming assignments stored as repositories using instructor-provided rubrics and AI-assisted evaluation.
+Assists automates rubric-based grading of GitHub/GitLab student repositories with auditable AI feedback.
 
 ---
 
@@ -33,7 +33,7 @@ The system is designed to be:
 ```bash
 git clone <repository-url>
 cd repo-grading-assistant
-python -m venv .venv   ( macOS / Linux)
+python -m venv .venv   # macOS / Linux
   -or-
 py -3.11 -m venv .venv   # Windows
 ```
@@ -298,3 +298,8 @@ MIT License
 
 See `CONTRIBUTING.md` for development guidelines.
 
+## Security
+## Data Privacy
+## Roadmap
+## Support
+## Citation
