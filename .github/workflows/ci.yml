@@ -67,9 +67,11 @@ jobs:
           python -m pip install -U pip build
           python -m build
 
-      - name: Install wheel (clean venv) + CLI smoke
+      - name: Install wheel + runtime deps + CLI smoke
         env:
           OPENAI_API_KEY: "ci-placeholder"
         run: |
+          python -m pip install -U pip
+          python -m pip install openai==0.28.0 python-dotenv>=1.0.0
           python -m pip install --no-deps dist/*.whl
           repo-grading-assistant --help
