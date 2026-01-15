@@ -25,7 +25,6 @@ import re
 import openai
 import difflib
 from importlib import resources as importlib_resources
-from typing import Optional
 
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
