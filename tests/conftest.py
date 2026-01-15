@@ -35,11 +35,14 @@ def temp_project(tmp_path):
     configs_dir = root / "configs"
     configs_dir.mkdir()
 
+
+    # New default behavior: prompt file lives next to the config file
+    system_prompt_file = configs_dir / "base_system_prompt.txt"
+    system_prompt_file.write_text("You are grading.", encoding="utf-8")
+
+    # (Optional) keep prompts/ folder if other tests need it
     prompts_dir = root / "prompts"
     prompts_dir.mkdir()
-
-    system_prompt_file = prompts_dir / "base_system_prompt.txt"
-    system_prompt_file.write_text("You are grading.", encoding="utf-8")
 
 
     config_file = configs_dir / "homework6_config.json"

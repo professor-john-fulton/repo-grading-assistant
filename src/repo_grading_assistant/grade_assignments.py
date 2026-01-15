@@ -56,7 +56,13 @@ def setup_logging() -> None:
     console = logging.StreamHandler(sys.stdout)
     console.setLevel(logging.INFO)
     console.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+
+    root_logger = logging.getLogger("")
+    if not any(isinstance(h, logging.StreamHandler) for h in root_logger.handlers):
+        root_logger.addHandler(console)
+
     logging.getLogger("").addHandler(console)
+
     logging.info(f"Repo Grading Assistant v {__version__}")
     logging.info(f"Logging initialized → {log_file}")
 
@@ -755,7 +761,6 @@ def main() -> None:
     # Use the config file's folder as the default base for relative paths
     base_dir = config_path.parent
 
-    cfg = load_config(args.config)
     # Global (deployment-wide) config – may specify default model, etc.
     global_cfg = load_global_config()
 

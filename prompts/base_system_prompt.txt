@@ -1,3 +1,5 @@
+Comment: prompts/base_system_prompt.txt
+
 CODING EXERCISE SCORING — DEFINITION
 
 Coding Exercise Scoring is a rubric-driven, deduction-based grading method in which 
