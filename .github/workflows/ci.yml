@@ -8,12 +8,14 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} / py${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.13"]
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        python-version: ["3.11"]
 
     steps:
       - name: Checkout
@@ -25,20 +27,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
+      - name: Upgrade pip
+        run: python -m pip install -U pip
+
       - name: Install package + dev tools
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
-          python -m pip install ruff
+        run: python -m pip install -e ".[dev]"
 
       - name: Lint (ruff)
-        run: |
-          ruff check src tests
+        run: ruff check src tests
 
       - name: Tests (pytest)
         env:
-          # Tests monkeypatch this, but setting it avoids accidental failures if a test changes.
           OPENAI_API_KEY: "ci-placeholder"
-        run: |
-          python -m pytest -q
-
+        run: python -m pytest -q
