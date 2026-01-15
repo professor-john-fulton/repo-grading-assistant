@@ -76,3 +76,4 @@ jobs:
           python -m pip install openai==0.28.0 "python-dotenv>=1.0.0"
           python -m pip install --no-deps (Get-ChildItem dist -Filter *.whl | Select-Object -First 1).FullName
           repo-grading-assistant --help
+          repo-grading-assistant --version
