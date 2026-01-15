@@ -27,7 +27,8 @@ git pull --rebase gitlab main
 # TEST GATE (fails script on failure)
 # ----------------------------
 echo ""
-echo "Running tests (pytest)..."
+echo "Running tests (ruff & pytest)..."
+ruff check src tests --fix
 python -m pytest
 echo "Tests passed ✔"
 echo ""
