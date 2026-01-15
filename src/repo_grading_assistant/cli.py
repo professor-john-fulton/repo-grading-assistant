@@ -1,5 +1,5 @@
 # !/usr/bin/env python3
-#  src/repo-grading-assistant/cli.py
+# src/repo_grading_assistant/cli.py
 """Command-line interface for Repo Grading Assistant."""
 
 from repo_grading_assistant.grade_assignments import main as run_grader

@@ -19,7 +19,7 @@
 ## 0.1.0 - 1/8/26 - Initial open-source version
 
 ### Added
-- Early prototype code and documentation mover without history
+- Early prototype code and documentation moved without history
 - Cleanup of structure, sample files, and QUICKSTART.md
 - Refactored to installable package with pipx
 - Documentation (License, Security, Code of Conduct, etc)
