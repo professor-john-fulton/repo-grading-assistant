@@ -30,33 +30,24 @@ The system is designed to be:
 
 ## Installation
 
-```bash
-git clone <repository-url>
-cd repo-grading-assistant
-python -m venv .venv   # macOS / Linux
-  -or-
-py -3.11 -m venv .venv   # Windows
-```
-Activate the environment:
+> **Note (Git Bash users):**  
+> The following activation command uses `source`, which only works in **Git Bash**.  
+> If you are using **PowerShell (Windows default)**, activate with:
+> ```
+> .\.venv\Scripts\Activate.ps1
+> ```
 
-
-### Windows
 
 ```bash
-.venv\Scripts\activate
+git clone https://github.com/professor-john-fulton/repo-grading-assistant.git 
+cd repo-grading-assistant 
+py -3.11 -m venv .venv 
+source .venv/Scripts/activate 
+python -m pip install -U pip 
+python -m pip install -e ".[dev]" 
+repo-grading-assistant.exe --help
 ```
-### macOS / Linux
 
-```bash
-source .venv/bin/activate
-```
-
-## Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-## Set your API key as an environment variable:
 
 ### Windows
 

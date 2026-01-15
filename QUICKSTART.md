@@ -1,35 +1,7 @@
 ## Quickstart.md
 
 
-This is the place to start.
-
-Python runs best inside of a virtual environment. Other enviroments should work but venv is built into python
-
-``` bash
-py -3.11 -m venv .venv
-source .venv/bin/activate   # macOS/Linux
-source .venv/Scripts/activate    # Windows
-pip install -e .[dev]
-```
-
-Run this command from the README.md
-``` bash
-repo-grading-assistant  --help
-```
-and
-
-`` bash
-repo-grading-assistant \
-  --config docs/examples/grading_config_example.json \
-  --repo-root docs/examples/grading_assignment_example \
-  --dry-run
-```
-
-and
-
-``` bash
-pytest
-```
+> If you haven’t installed yet, see README → Installation.
 
 
 1) You will need an OpeanAI paid account to run this project, except for pytest suite and --help and --dry-run
