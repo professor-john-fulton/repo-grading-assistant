@@ -708,10 +708,9 @@ Respond using the following format:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    setup_logging()
-    logs_dir = Path("logs")
 
     parser = argparse.ArgumentParser(description="Automated grader for coding assignments.")
+
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     parser.add_argument("--skip-scored", action="store_true", help="Skip any student directory that already contains grade_summary.txt")
     parser.add_argument("--config", required=True, help="Path to configuration JSON.")
@@ -732,11 +731,15 @@ def main() -> None:
 
     parser.add_argument(
         "--system-prompt",
-        default="prompts/base_system_prompt.txt",
-        help="Path to system-level grading prompt file."
+        default="base_system_prompt.txt",
+        help="Path to system-level grading prompt file (default: next to the config file)."
     )
 
     args = parser.parse_args()
+
+    # Only now initialize logging (help/version have already exited)
+    setup_logging()
+    logs_dir = Path("logs")
 
     # Resolve and validate repo root
     repo_root = Path(args.repo_root).resolve()
@@ -744,6 +747,13 @@ def main() -> None:
         logging.error(f"--repo-root does not exist or is not a directory: {repo_root}")
         logging.error("Example: --repo-root D:/Exercises/FA25/ITEC660/Lab05")
         sys.exit(1)
+
+    # Resolve config path ONCE and load config
+    config_path = Path(args.config).expanduser().resolve()
+    cfg = load_config(str(config_path))
+
+    # Use the config file's folder as the default base for relative paths
+    base_dir = config_path.parent
 
     cfg = load_config(args.config)
     # Global (deployment-wide) config – may specify default model, etc.
@@ -758,20 +768,17 @@ def main() -> None:
     system_prompt_path = Path(args.system_prompt).expanduser()
 
     if not system_prompt_path.is_absolute():
-        system_prompt_path = (Path.cwd() / system_prompt_path).resolve()
+        system_prompt_path = (base_dir / system_prompt_path).resolve()
 
     if not system_prompt_path.exists():
         logging.error(f"System prompt file not found: {system_prompt_path}")
-        logging.error("Tip: pass an absolute path or a path relative to the folder you run repo-grading-assistant from.")
+        logging.error("Tip: pass an absolute path or a path relative to the config file location.")
         sys.exit(1)
 
     system_prompt = system_prompt_path.read_text(encoding="utf-8")
 
 
     assignment_pattern = cfg.get("assignment_pattern", "homework-*")
-
-    config_path = Path(args.config).expanduser().resolve()
-    cfg = load_config(str(config_path))
 
     grading_key_file = resolve_grading_key_path(cfg, config_path)
     logging.info(f"[CONFIG] Grading key → {grading_key_file}")
@@ -854,7 +861,12 @@ def main() -> None:
 
         logging.info("---- VALIDATION START ----")
         logging.info(f"Config OK: {args.config}")
-        logging.info("API key detected: YES")
+
+        api_key = os.getenv("OPENAI_API_KEY")
+        logging.info(f"API key available: {'YES' if api_key else 'NO'}")
+        if args.dry_run:
+            logging.info("API key not required for --dry-run.")
+
         logging.info(f"Key file exists: {grading_key_file}")
         logging.info(f"Model configured: {model}")
         logging.info(f"First matching folder: {first.name}")

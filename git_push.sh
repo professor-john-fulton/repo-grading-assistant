@@ -1,27 +1,30 @@
 #!/bin/bash
-# A simple script to add, commit, pull, and push changes to remote Git repositories.
+# Add, commit, sync, and push changes to GitHub + GitLab.
 # Usage: ./git_push.sh
 
-set -e
+set -euo pipefail
+
+# Ensure remotes exist
+git remote get-url github >/dev/null 2>&1 || { echo "Error: remote 'github' not configured"; exit 1; }
+git remote get-url gitlab >/dev/null 2>&1 || { echo "Error: remote 'gitlab' not configured"; exit 1; }
 
 git status
 
-read -p "Enter commit message: " message
+read -r -p "Enter commit message: " message
+if [[ -z "${message}" ]]; then
+  echo "Error: commit message cannot be empty"
+  exit 1
+fi
 
 git add -A
 git commit -m "$message"
 
+# Sync first (avoids push rejection)
+git pull --rebase github main
+git pull --rebase gitlab main
+
 # Push code
 git push github main
 git push gitlab main
-
-# Ask about tagging
-read -p "Create release tag? (y/n): " tagchoice
-if [[ $tagchoice == "y" ]]; then
-  read -p "Tag name (ex: v0.1.0): " tagname
-  git tag -a $tagname -m "Release $tagname"
-  git push github --tags
-  git push gitlab --tags
-fi
 
 echo "Done ✔"
