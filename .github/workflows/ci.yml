@@ -34,9 +34,42 @@ jobs:
         run: python -m pip install -e ".[dev]"
 
       - name: Lint (ruff)
-        run: ruff check src tests
+        run: python -m ruff check src tests
 
       - name: Tests (pytest)
         env:
           OPENAI_API_KEY: "ci-placeholder"
         run: python -m pytest -q
+
+  package-smoke:
+    name: Package smoke test (wheel install) / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: test
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        python-version: ["3.11"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Build sdist + wheel
+        run: |
+          python -m pip install -U pip build
+          python -m build
+
+      - name: Install wheel (clean venv) + CLI smoke
+        env:
+          OPENAI_API_KEY: "ci-placeholder"
+        run: |
+          python -m pip install --no-deps dist/*.whl
+          repo-grading-assistant --help
