@@ -29,3 +29,6 @@ testpaths = ["tests"]
 [project.urls]
 Homepage = "https://github.com/professor-john-fulton/repo-grading-assistant"
 Issues = "https://github.com/professor-john-fulton/repo-grading-assistant/issues"
+
+[tool.setuptools.package-data]
+repo_grading_assistant = ["data/*.txt"]

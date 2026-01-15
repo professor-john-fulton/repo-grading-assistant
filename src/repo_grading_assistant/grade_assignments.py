@@ -24,6 +24,9 @@ import fnmatch
 import re
 import openai
 import difflib
+from importlib import resources as importlib_resources
+from typing import Optional
+
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
 try:
@@ -83,14 +86,16 @@ def load_config(config_path: str) -> dict:
         logging.error(f"Failed to parse config JSON: {e}")
         sys.exit(1)
 
-def load_global_config() -> dict:
+
+
+def load_global_config(configs_dir: Path) -> dict:
     """
-    Load optional global configuration (e.g., default model) from
-    configs/global_config.json, located next to this script.
+    Load optional global configuration (e.g., default model) from:
+      <config_dir>/configs/global_config.json
 
     This must NEVER cause the program to exit; it only provides defaults.
     """
-    path = Path("configs") / "global_config.json"
+    path = (configs_dir / "global_config.json").resolve()
 
     if not path.exists():
         logging.info(f"No global config found at {path}; using built-in defaults.")
@@ -102,6 +107,23 @@ def load_global_config() -> dict:
         logging.error(f"Failed to parse global config JSON ({path}): {e}")
         logging.error("Falling back to built-in defaults.")
         return {}
+    
+
+
+def load_packaged_system_prompt() -> str:
+    """
+    Load the default system prompt shipped inside the installed package.
+    Works even when running from an arbitrary working directory.
+    """
+    try:
+        prompt_path = importlib_resources.files("repo_grading_assistant").joinpath(
+            "data/base_system_prompt.txt"
+        )
+        return prompt_path.read_text(encoding="utf-8")
+    except Exception as e:
+        logging.error(f"Failed to load packaged system prompt: {e}")
+        logging.error("Tip: reinstall the package, or pass --system-prompt explicitly.")
+        sys.exit(1)
 
 
 # ---------------------------------------------------------------------------
@@ -737,8 +759,11 @@ def main() -> None:
 
     parser.add_argument(
         "--system-prompt",
-        default="base_system_prompt.txt",
-        help="Path to system-level grading prompt file (default: next to the config file)."
+        default=None,
+        help=(
+            "Path to system-level grading prompt file. "
+            "If omitted, uses the packaged default prompt."
+        ),
     )
 
     args = parser.parse_args()
@@ -760,27 +785,31 @@ def main() -> None:
 
     # Use the config file's folder as the default base for relative paths
     base_dir = config_path.parent
+    configs_dir = (base_dir / "configs")
 
-    # Global (deployment-wide) config – may specify default model, etc.
-    global_cfg = load_global_config()
+    global_cfg = load_global_config(configs_dir)
 
     # Base maximum score for this assignment (denominator, before any bonus)
     max_score = int(cfg.get("max_score", 60))
     logging.info(f"[CONFIG] Base max_score = {max_score}")
 
 
-    # Resolve system prompt path (absolute or relative-to-CWD)
-    system_prompt_path = Path(args.system_prompt).expanduser()
+    # System prompt:
+    # - If user passed --system-prompt: resolve relative to the config file directory
+    # - Else: load the packaged default prompt
+    if args.system_prompt:
+        system_prompt_path = Path(args.system_prompt).expanduser()
+        if not system_prompt_path.is_absolute():
+            system_prompt_path = (base_dir / system_prompt_path).resolve()
 
-    if not system_prompt_path.is_absolute():
-        system_prompt_path = (base_dir / system_prompt_path).resolve()
+        if not system_prompt_path.exists():
+            logging.error(f"System prompt file not found: {system_prompt_path}")
+            logging.error("Tip: pass an absolute path, or a path relative to the config file location.")
+            sys.exit(1)
 
-    if not system_prompt_path.exists():
-        logging.error(f"System prompt file not found: {system_prompt_path}")
-        logging.error("Tip: pass an absolute path or a path relative to the config file location.")
-        sys.exit(1)
-
-    system_prompt = system_prompt_path.read_text(encoding="utf-8")
+        system_prompt = system_prompt_path.read_text(encoding="utf-8")
+    else:
+        system_prompt = load_packaged_system_prompt()
 
 
     assignment_pattern = cfg.get("assignment_pattern", "homework-*")
@@ -799,11 +828,13 @@ def main() -> None:
     base_exclusions = list(cfg.get("exclusions", []))
     profiles = list(cfg.get("language_profile", []))
 
-    # Load global exclusions library
-    excl_path = Path("configs/exclusions.json")
+
+    # Load exclusions library from <config_dir>/configs/exclusions.json
+    excl_path = (configs_dir / "exclusions.json")
     global_exclusions = {}
     if excl_path.exists():
         global_exclusions = json.loads(excl_path.read_text(encoding="utf-8"))
+
 
     # Start with global defaults
     exclusions = list(global_exclusions.get("global", []))
