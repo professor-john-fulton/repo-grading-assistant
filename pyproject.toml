@@ -8,12 +8,11 @@ version = "0.1.0"
 description = "Assistive Python CLI for instructor review and feedback on student code (human-in-the-loop)."
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "MIT"}
+license = "MIT"
 authors = [{name = "John Fulton"}]
 dependencies = ["openai==0.28.0", "python-dotenv>=1.0.0"]
 classifiers = [
   "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
 

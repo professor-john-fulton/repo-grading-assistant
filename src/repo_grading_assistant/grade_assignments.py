@@ -759,10 +759,7 @@ def main() -> None:
     parser.add_argument(
         "--system-prompt",
         default=None,
-        help=(
-            "Path to system-level grading prompt file. "
-            "If omitted, uses the packaged default prompt."
-        ),
+        help="Path to system-level grading prompt file. If omitted, uses the packaged default prompt."
     )
 
     args = parser.parse_args()
