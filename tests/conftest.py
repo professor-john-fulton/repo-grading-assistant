@@ -52,7 +52,7 @@ def temp_project(tmp_path):
         "rubric_path": "rubric.txt",
         "grading_key_file": "../keys/key.txt",
         "required_files": ["main.py", "readme.txt"],
-        "model": "gpt-4o-mini"
+        "model": "gpt-5-mini"
     }))
 
     student_dir = root / "homework-student_jdoe"

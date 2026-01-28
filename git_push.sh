@@ -8,7 +8,15 @@ set -euo pipefail
 git remote get-url github >/dev/null 2>&1 || { echo "Error: remote 'github' not configured"; exit 1; }
 git remote get-url gitlab  >/dev/null 2>&1 || { echo "Error: remote 'gitlab' not configured"; exit 1; }
 
+
 git status
+
+
+# Extract version from pyproject.toml
+version=$(grep -m 1 '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+echo ""
+echo "📦 Current version: $version"
+echo ""
 
 read -r -p "Enter commit message: " message
 if [[ -z "${message}" ]]; then

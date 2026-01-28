@@ -25,6 +25,7 @@ import re
 import openai
 import difflib
 from importlib import resources as importlib_resources
+from importlib.metadata import version, PackageNotFoundError
 
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
@@ -39,6 +40,16 @@ try:
     load_dotenv()
 except ModuleNotFoundError:
     pass
+
+# ---------------------------------------------------------------------------
+# Version
+# ---------------------------------------------------------------------------
+
+try:
+    __version__ = version("repo-grading-assistant")
+except PackageNotFoundError:
+    # Fallback for development if package not installed
+    __version__ = "0.0.0-dev"
 
 # ---------------------------------------------------------------------------
 # Logging Setup
@@ -842,8 +853,8 @@ def main() -> None:
     # Finally, add assignment-specific overrides
     exclusions.extend(base_exclusions)
 
-    # gpt-5 is the backup value in case nothing is specified in global config,
-    model = cfg.get("model") or global_cfg.get("model", "gpt-5")
+    # gpt-5-mini is the backup value in case nothing is specified in global config,
+    model = cfg.get("model") or global_cfg.get("model", "gpt-5-mini")
 
     dry_run = args.dry_run 
 

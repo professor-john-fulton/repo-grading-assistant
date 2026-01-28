@@ -3,12 +3,14 @@
 
 ## How to run automated tests
 
-    - pytest
-    - pytest -v
-    - pytest -v | tee tests/test_run.log
-    - pytest -v --cov=src.repo-grading-assistant.grade_assignments | tee tests/test_run.log
-    - pytest -v --cov=src.repo-grading-assistant.grade_assignments --cov-report=term-missing 2>&1 | tee tests/test_run.log
-    - pytest -v --cov=src.repo-grading-assistant.grade_assignments --cov-report=term-missing 2>&1 | tee tests/test_run.log
+```bash
+pytest
+pytest -v
+pytest -v | tee tests/test_run.log
+pytest -v --cov=src/repo_grading_assistant/grade_assignments --cov-report=term-missing
+pytest -v --cov=src/repo_grading_assistant/grade_assignments --cov-report=term-missing 2>&1 | tee tests/test_run.log
+pytest -v --cov=src/repo_grading_assistant --cov-report=html --cov-report=term-missing
+```
 
 
 ## Manual Tests

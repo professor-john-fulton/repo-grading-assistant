@@ -1,3 +1,5 @@
+echo "Directory Tree:"
+
 find . \
   ! -path "./.venv*" \
   ! -path "./.git*" \
@@ -5,3 +7,11 @@ find . \
   ! -path "*/__pycache__*" \
   ! -name "*.pyc" \
   | sed 's|[^/]*/|  |g'
+
+echo "--------------------------------"
+echo "Tracked Git Files:"
+git ls-files
+
+echo "--------------------------------"
+
+echo "End of Report."

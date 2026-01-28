@@ -79,15 +79,21 @@ repo-grading-assistant --help
 
 ### Set API Key
 
-#### Windows
-```powershell
-setx OPENAI_API_KEY "your-key-here"
+For local development, create a `.env` file in the project root:
+
+```bash
+cp .env.example .env
 ```
 
-#### macOS / Linux
-```bash
-export OPENAI_API_KEY="your-key-here"
+Then edit `.env` and add your OpenAI API key:
+
 ```
+OPENAI_API_KEY="sk-proj-your-actual-key-here"
+```
+
+> **Note:** The `.env` file is excluded from git by `.gitignore` to keep your API key secure.
+>
+> **For remote deployments:** Use your platform's environment variable configuration (e.g., Railway, Heroku, etc.) instead of a `.env` file.
 
 ---
 
@@ -140,6 +146,66 @@ Each assignment uses a JSON configuration file.
 | max_score | Base assignment score |
 | language_profile | Loads standard exclusions by language |
 | exclusions | Additional files/directories to ignore |
+| model | (Optional) OpenAI model to use for this assignment |
+
+---
+
+## Model Configuration
+
+This tool uses OpenAI's API to evaluate student code. You can configure which model to use at three levels:
+
+### Model Selection Priority (highest to lowest):
+
+1. **Assignment Config** - Set `"model"` in your assignment's JSON config file
+2. **Global Config** - Set `"model"` in `configs/global_config.json`
+3. **Default Fallback** - Uses `gpt-5-mini` if nothing is specified
+
+### Example Global Config (`configs/global_config.json`):
+
+```json
+{
+  "model": "gpt-5-mini"
+}
+```
+
+### Example Assignment Config with Model Override:
+
+```json
+{
+  "assignment_pattern": "lab-5-*",
+  "grading_key_file": "Lab05-key.txt",
+  "required_files": ["models.py", "views.py"],
+  "max_score": 60,
+  "model": "gpt-5"
+}
+```
+
+### Available Models
+
+Common OpenAI models (as of January 2026):
+- `gpt-5-mini` - Fast, cost-efficient (default)
+- `gpt-5` - More capable, higher cost
+- `gpt-5-nano` - Fastest, most cost-efficient
+- `gpt-4.1` - Previous generation
+- `gpt-4o-mini` - Legacy fast model
+
+See https://platform.openai.com/docs/models for the full list.
+
+### Important: API Key Model Access
+
+⚠️ **Your OpenAI API key must have access to the model you select.** If your API key doesn't have permission for a specific model, you'll receive an error:
+
+```
+Error: The API project does not have access to model gpt-5-mini
+```
+
+**To grant model access:**
+1. Go to https://platform.openai.com/
+2. Navigate to your project settings
+3. Find model permissions/limits (location varies)
+4. Enable the models you need
+
+> **Developer Note:** Finding the correct settings page for model permissions in OpenAI's dashboard can be challenging. If you have difficulty locating these settings, consider using ChatGPT to help navigate to the right configuration page, or contact OpenAI support.
 
 ---
 
@@ -168,8 +234,8 @@ Prompts are externalized:
 
 | Component | Location |
 |------------|-----------|
-| System behavior | `prompts/base_system_prompt.txt` |
-| Assignment (grading) keys | `keys/*.txt` |
+| System behavior | `src/repo_grading_assistant/data/base_system_prompt.txt` (packaged) |
+| Assignment (grading) keys | Specified in config, typically in `./keys/` directory |
 
 The engine builds prompts dynamically using:
 
@@ -183,8 +249,9 @@ The engine builds prompts dynamically using:
 
 | Issue | Fix |
 |------|-----|
-| Prompt not found | Confirm `prompts/base_system_prompt.txt` exists |
-| API key error | Verify `OPENAI_API_KEY` is set |
+| Prompt not found | Ensure package is installed correctly: `python -m pip install -e .` |
+| API key error | Verify `.env` file exists with `OPENAI_API_KEY` set |
+| Model access error | Verify your OpenAI API key has access to the model (see model configuration below) |
 | No repos found | Check `assignment_pattern` |
 | CSV not created | Check write permissions |
 | Rule violations | Check cardinality or wildcard rules |
