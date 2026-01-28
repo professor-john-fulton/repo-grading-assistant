@@ -12,6 +12,18 @@ pytest -v --cov=src/repo_grading_assistant/grade_assignments --cov-report=term-m
 pytest -v --cov=src/repo_grading_assistant --cov-report=html --cov-report=term-missing
 ```
 
+### OpenAI API Validation
+
+The test suite includes one test that calls the actual OpenAI API to validate configuration:
+- `test_openai_api_access_and_response` - Validates API key and model access
+- Runs automatically with every `pytest` execution
+- Incurs minimal cost (~$0.001 per test run)
+- Skips automatically if `OPENAI_API_KEY` is not set
+
+**Requirements:**
+- `OPENAI_API_KEY` must be set in `.env` file
+- API key must have access to `gpt-5-mini` model
+
 
 ## Manual Tests
 
