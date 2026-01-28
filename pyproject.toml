@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "repo-grading-assistant"
-version = "1.0.11"
+version = "1.0.12"
 description = "Assistive Python CLI for instructor review and feedback on student code (human-in-the-loop)."
 readme = "README.md"
 requires-python = ">=3.11"
