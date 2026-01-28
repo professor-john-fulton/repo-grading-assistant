@@ -650,7 +650,6 @@ def test_resolve_grading_key_path_relative(tmp_path):
 
 def test_resolve_grading_key_path_with_tilde(tmp_path):
     """Test resolving grading key paths with home directory expansion."""
-    from pathlib import Path
     config_file = tmp_path / "config.json"
     
     # Use tilde notation
@@ -883,7 +882,6 @@ def test_openai_api_access_and_response():
     - API key must have access to gpt-5-mini model
     """
     import openai
-    from pathlib import Path
     
     # Load API key
     api_key = os.getenv("OPENAI_API_KEY")
@@ -903,7 +901,7 @@ def test_openai_api_access_and_response():
                 {"role": "system", "content": "You are a test assistant."},
                 {"role": "user", "content": test_prompt}
             ],
-            max_tokens=50,
+            max_completion_tokens=50,
             temperature=0
         )
         
@@ -923,8 +921,8 @@ def test_openai_api_access_and_response():
         assert "test" in response_text.lower() or "successful" in response_text.lower(), \
             f"Response doesn't contain expected keywords: {response_text}"
         
-        print(f"\n✓ OpenAI API integration test passed")
-        print(f"✓ Model: gpt-5-mini")
+        print("\n✓ OpenAI API integration test passed")
+        print("✓ Model: gpt-5-mini")
         print(f"✓ Response received: {response_text[:100]}...")
         
     except openai.error.AuthenticationError:
