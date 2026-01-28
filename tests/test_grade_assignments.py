@@ -901,8 +901,7 @@ def test_openai_api_access_and_response():
                 {"role": "system", "content": "You are a test assistant."},
                 {"role": "user", "content": test_prompt}
             ],
-            max_completion_tokens=50,
-            temperature=0
+            max_completion_tokens=50
         )
         
         # Validate we got a response
