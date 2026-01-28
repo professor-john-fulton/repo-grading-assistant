@@ -27,6 +27,11 @@ The system is designed to be:
 - **Auditable**  
 - **Open-source friendly**
 
+**Quick Links:**
+- 📖 [Examples Walkthrough](docs/EXAMPLES_WALKTHROUGH.md) - Step-by-step guide with sample data
+- ❓ [FAQ](#faq) - Common questions and troubleshooting
+- 🚀 [Quickstart Guide](QUICKSTART.md) - Get started in 5 minutes
+
 ---
 
 ## Requirements
@@ -330,6 +335,196 @@ This tool processes student code locally and sends it to OpenAI's API for evalua
 - Inform students that their code may be processed by AI for grading
 - Ensure compliance with your institution's data privacy policies
 - Do not commit student submissions, grade outputs, or logs to version control
+
+---
+
+## FAQ
+
+### General Questions
+
+**Q: How much does it cost to grade an assignment?**
+
+A: Costs depend on code size and student count. Typical costs with gpt-5-mini:
+- **Small assignment** (calculator, basic web form): ~$0.001-0.003 per student
+- **Medium assignment** (full Django/Flask app): ~$0.005-0.015 per student
+- **Large assignment** (complex multi-file project): ~$0.020-0.050 per student
+
+For a class of 30 students with medium-sized assignments: ~$0.15-0.45 total.
+
+**Tip:** Use `exclusions` to skip unnecessary files (node_modules, build artifacts, etc.) to reduce costs.
+
+**Q: Can I use this for non-Python code?**
+
+A: Yes! While the examples show Python/Django, the tool works with any programming language. The AI model understands all major languages including:
+- JavaScript/TypeScript (React, Node.js, etc.)
+- Java (Spring Boot, Android, etc.)
+- C/C++/C#
+- Ruby (Rails, etc.)
+- PHP (Laravel, etc.)
+- Go, Rust, Swift, Kotlin, and more
+
+Set the `language_profile` in your config to help the AI understand context (e.g., `["javascript", "react"]`).
+
+**Q: Can I grade Jupyter notebooks?**
+
+A: Yes! Include `**/*.ipynb` in your `required_files` or let the default glob patterns find them. The AI can read and evaluate Jupyter notebook JSON structure, understanding both code cells and markdown explanations.
+
+**Q: What if students have different folder structures?**
+
+A: Use flexible glob patterns:
+- `**/filename.py` - finds file at any level
+- `**/*.py` - finds all Python files anywhere
+- Remove strict path requirements from `required_files`
+
+The AI evaluates based on functionality and code quality, not folder structure. Missing required files are noted in the report but grading still proceeds.
+
+**Q: How accurate is the AI grading?**
+
+A: The AI is highly effective for:
+- Code structure and organization evaluation
+- Feature implementation verification
+- Best practices assessment
+- Partial credit decisions
+
+**Recommendation:** Spot-check 10-20% of grades initially, especially borderline cases. Once confident in the grading key and AI consistency, reduce manual review.
+
+**Q: Can students dispute their grades?**
+
+A: Yes. The `grade_summary.txt` file explains the reasoning for each point awarded or deducted. You can:
+1. Review the AI's evaluation with the student
+2. Manually adjust the grade if the AI missed something
+3. Refine your grading key for future assignments
+4. Re-run grading with updated instructions
+
+### Grading Keys & Templates
+
+**Q: How detailed should my grading key be?**
+
+A: More specific keys yield more consistent results. Compare:
+
+**Too vague:**
+```text
+- Good code quality
+*** +20 points
+```
+
+**Better:**
+```text
+- Code quality assessment:
+  * Proper function/class naming conventions
+  * Adequate comments for complex logic
+  * No code duplication (DRY principle)
+  * Appropriate use of data structures
+*** +20 points (partial credit for incomplete)
+```
+
+**Q: How do I handle bonus points?**
+
+A: Mark bonus items explicitly in your grading key:
+
+```text
+*** +5 bonus points (above the max_score)
+```
+
+Set `max_score` in config to the base points total (not including bonuses). The AI will:
+- Award up to `max_score` for base requirements
+- Add bonus points on top for stretch goals
+- Report as "68/60 (+8 bonus)" for clarity
+
+**Q: Can I grade subjective criteria like "code elegance"?**
+
+A: Yes, but provide clear guidelines:
+
+```text
+- Code elegance (subjective assessment):
+  * Uses idiomatic language patterns
+  * Avoids unnecessary complexity
+  * Well-organized with logical flow
+  * Professional formatting and style
+*** +10 points (partial credit encouraged)
+```
+
+The AI is good at subjective assessment when given context and examples.
+
+### Technical Issues
+
+**Q: Why is grading slow?**
+
+A: Each student requires an API call to OpenAI. For 30 students:
+- Expected time: ~1-3 minutes total
+- API rate limits may add delays
+
+**Tip:** Use `--validate` flag to test with first student only before processing entire class.
+
+**Q: What if the API call fails for one student?**
+
+A: The tool continues processing other students and logs the error. You can re-run with `--student <folder_name>` to grade just the failed student.
+
+**Q: Can I use a different AI model?**
+
+A: Yes! Specify in your config:
+
+```json
+{
+  "model": "gpt-4",
+  "max_tokens": 2000
+}
+```
+
+Or set globally in `configs/global_config.json`. See [Model Configuration](#model-configuration) for details.
+
+**Q: How do I exclude build files or dependencies?**
+
+A: Use the `exclusions` field in your config:
+
+```json
+{
+  "exclusions": [
+    "node_modules",
+    "__pycache__",
+    "*.pyc",
+    ".venv",
+    "build",
+    "dist",
+    ".git"
+  ]
+}
+```
+
+This reduces API costs and focuses evaluation on student code.
+
+### Best Practices
+
+**Q: Should I tell students their code will be AI-graded?**
+
+A: Yes, transparency is important:
+- Inform students in the syllabus or assignment instructions
+- Explain that AI provides consistent, detailed feedback
+- Emphasize that you review results and can override decisions
+- Note that the AI sees their code (privacy consideration)
+
+**Q: How often should I review AI grading decisions?**
+
+A: Recommended approach:
+1. **First assignment:** Review 100% of grades to validate grading key
+2. **Second assignment:** Review ~30% (focus on borderline grades)
+3. **Ongoing:** Review ~10-20% per assignment, plus any student disputes
+
+**Q: Can I use this for peer review instead of grading?**
+
+A: Yes! Modify your grading key to provide feedback format:
+
+```text
+Provide constructive feedback on:
+- What the student did well
+- Areas for improvement
+- Specific suggestions for better code organization
+- Security or performance concerns
+
+Do not assign numerical grades.
+```
+
+Run with `max_score: 0` to generate feedback reports without scores.
 
 ---
 
