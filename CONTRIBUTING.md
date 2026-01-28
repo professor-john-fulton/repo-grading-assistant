@@ -150,3 +150,20 @@ Use anonymized examples only.
 
 By contributing, you agree your work may be released under the MIT
 license.
+
+
+---
+
+## Documentation Contributions
+
+Documentation improvements are highly valued! This includes:
+
+- Fixing typos and grammar
+- Clarifying confusing sections
+- Adding examples
+- Updating outdated information
+- Creating new guides
+
+For detailed documentation guidelines, code style, testing procedures, and contribution workflows, see the full sections above.
+
+Thank you for contributing to Repo Grading Assistant! í¾“

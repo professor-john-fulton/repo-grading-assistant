@@ -546,7 +546,7 @@ If you use this tool in academic work, please cite:
 
 ```
 Fulton, J. (2026). Repo Grading Assistant: AI-Assisted Rubric-Based 
-Code Evaluation Tool (Version 0.1.0) [Computer software]. 
+Code Evaluation Tool (Version 1.0.10) [Computer software]. 
 https://github.com/professor-john-fulton/repo-grading-assistant
 ```
 
@@ -557,6 +557,6 @@ BibTeX:
   title = {Repo Grading Assistant: AI-Assisted Rubric-Based Code Evaluation Tool},
   year = {2026},
   url = {https://github.com/professor-john-fulton/repo-grading-assistant},
-  version = {0.1.0}
+  version = {1.0.10}
 }
 ```
