@@ -888,6 +888,11 @@ def test_openai_api_access_and_response():
     if not api_key:
         pytest.skip("OPENAI_API_KEY not set - skipping integration test")
     
+    # Skip if API key is a placeholder value (CI environments often use placeholders)
+    placeholder_patterns = ["placeholder", "test", "ci-", "fake", "dummy", "example"]
+    if any(pattern in api_key.lower() for pattern in placeholder_patterns):
+        pytest.skip(f"OPENAI_API_KEY appears to be a placeholder - skipping integration test")
+    
     openai.api_key = api_key
     
     # Simple test prompt
