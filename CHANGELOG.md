@@ -16,7 +16,7 @@
 
 ---
 
-## 0.1.0 - 1/8/26 - Initial open-source version
+## [0.1.0] - 2026-01-08 - Initial open-source version
 
 ### Added
 - Early prototype code and documentation moved without history

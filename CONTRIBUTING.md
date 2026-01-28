@@ -7,7 +7,7 @@ Thanks for your interest!
 This project is maintained by a solo maintainer. Contributions are
 welcome, but please keep scope focused and changes well-documented.
 
-The stabdard flow for contribution to this open source project is:
+The standard flow for contribution to this open source project is:
 fork remotely → clone your fork locally → branch → change → test (install/usage) → push → PR back to upstream
 
 ## Setup
@@ -43,7 +43,7 @@ git checkout -b working-branch
 
 Use QUICKSTART.md for how to run the project. It is strongly suggested that you run the provided pytest suite before beginning  to make changes.
 
-Make change and add tests aas needed
+Make change and add tests as needed
 
 
 ## Testing
@@ -66,7 +66,7 @@ ruff check .
 git status
 ```
 
-examing changes and confirm ythat only those changes you intend are feflected
+Examine changes and confirm that only those changes you intend are reflected
 
 
 add and commit changes to your change branch
@@ -84,7 +84,7 @@ Open a Pull Request (PR) back to the upstream repo
 
 Go to your fork on GitHub.
 
-You’ll see a banner offering to Camplare & Pull Request for your pushed branch → click it.
+You'll see a banner offering to Compare & Pull Request for your pushed branch → click it.
 
 Set:
 
@@ -94,7 +94,7 @@ base: main
 
 head repository: your fork
 
-compare: docs/readme-proofread
+compare: working-branch
 
 In the PR description, include:
 
@@ -112,7 +112,7 @@ git push origin main
 
 Then rebase or merge your branch onto updated main (pick one):
 
-git checkout docs/readme-proofread
+git checkout working-branch
 git rebase main
 # or: git merge main
 git push --force-with-lease   # only if you rebased

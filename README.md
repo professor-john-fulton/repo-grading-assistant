@@ -34,7 +34,7 @@ The system is designed to be:
 - Python **3.11+**
 - OpenAI API key
 - Windows
-  - Likley usable in macOS, or Linux, but untested
+  - Likely usable in macOS, or Linux, but untested
 
 ---
 
@@ -309,8 +309,59 @@ See `CONTRIBUTING.md`
 
 ---
 
-## Security  
-## Data Privacy  
-## Roadmap  
-## Support  
-## Citation  
+## Security
+
+See `SECURITY.md` for information on reporting security vulnerabilities.
+
+---
+
+## Data Privacy
+
+This tool processes student code locally and sends it to OpenAI's API for evaluation. Key privacy considerations:
+
+- **Local Processing:** Student repositories remain on your local machine
+- **API Transmission:** Code excerpts are sent to OpenAI for grading feedback
+- **No Cloud Storage:** This tool does not store data in any cloud service
+- **Logs:** Execution logs are stored locally in `logs/` directory
+- **API Key Security:** Keep your `.env` file secure and never commit it to version control
+
+**Best Practices:**
+- Review OpenAI's data usage policy: https://openai.com/policies/privacy-policy
+- Inform students that their code may be processed by AI for grading
+- Ensure compliance with your institution's data privacy policies
+- Do not commit student submissions, grade outputs, or logs to version control
+
+---
+
+## Support
+
+For questions, issues, or feature requests:
+
+- **Issues:** https://github.com/professor-john-fulton/repo-grading-assistant/issues
+- **Discussions:** Open an issue with the "question" label
+- **Email:** john.fulton2@franklin.edu
+
+This is a community project maintained by volunteers. Response times may vary.
+
+---
+
+## Citation
+
+If you use this tool in academic work, please cite:
+
+```
+Fulton, J. (2026). Repo Grading Assistant: AI-Assisted Rubric-Based 
+Code Evaluation Tool (Version 0.1.0) [Computer software]. 
+https://github.com/professor-john-fulton/repo-grading-assistant
+```
+
+BibTeX:
+```bibtex
+@software{fulton2026repogradingassistant,
+  author = {Fulton, John},
+  title = {Repo Grading Assistant: AI-Assisted Rubric-Based Code Evaluation Tool},
+  year = {2026},
+  url = {https://github.com/professor-john-fulton/repo-grading-assistant},
+  version = {0.1.0}
+}
+```
