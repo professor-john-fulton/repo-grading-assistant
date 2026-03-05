@@ -146,9 +146,15 @@ def load_packaged_system_prompt() -> str:
         )
         return prompt_path.read_text(encoding="utf-8")
     except Exception as e:
-        logging.error(f"Failed to load packaged system prompt: {e}")
-        logging.error("Tip: reinstall the package, or pass --system-prompt explicitly.")
-        sys.exit(1)
+        logging.warning(f"Failed to load packaged system prompt: {e}")
+
+    local_prompt = Path(__file__).resolve().parent / "data" / "base_system_prompt.txt"
+    if local_prompt.exists():
+        return local_prompt.read_text(encoding="utf-8")
+
+    logging.error("Failed to load packaged system prompt from package or local path.")
+    logging.error("Tip: reinstall the package, or pass --system-prompt explicitly.")
+    sys.exit(1)
 
 
 # ---------------------------------------------------------------------------
