@@ -28,6 +28,12 @@ except Exception:  # openai<1.0 fallback
     from openai.error import Timeout
     APITimeoutError = Timeout
 
+try:
+    # openai>=1.0
+    from openai import APIConnectionError
+except Exception:  # openai<1.0 fallback
+    from openai.error import APIConnectionError
+
 
 SYSTEM_PROMPT = "You are grading."
 
@@ -150,6 +156,41 @@ def test_grade_submission_logs(temp_project, fake_env, fake_openai, sample_log):
         or "Saved grade summary" in logs
         or "Wrote summary" in logs
     )
+
+
+def test_grade_submission_retries_transient_connection_error(temp_project, fake_env, monkeypatch):
+    student_dir = temp_project["student_dir"]
+    grading_key_file = temp_project["grading_key_file"]
+    max_score = 60
+
+    calls = {"count": 0}
+
+    class FakeResponse:
+        choices = [type("obj", (), {
+            "message": {"content": "Grading complete.\nTotal: 55/60 points"}
+        })]
+
+    def flaky_create(*args, **kwargs):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            raise APIConnectionError("temporary disconnect")
+        return FakeResponse()
+
+    monkeypatch.setattr("openai.ChatCompletion.create", flaky_create)
+    monkeypatch.setattr("time.sleep", lambda *_: None)
+
+    result = grade_submission(
+        student_dir,
+        grading_key_file,
+        ["main.py", "readme.txt"],
+        "gpt-4o-mini",
+        max_score,
+        [],
+        SYSTEM_PROMPT,
+    )
+
+    assert result is not None
+    assert calls["count"] == 2
 
 
 # --------------------------------------------------------------------
