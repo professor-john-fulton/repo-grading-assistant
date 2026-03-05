@@ -152,6 +152,10 @@ def load_packaged_system_prompt() -> str:
     if local_prompt.exists():
         return local_prompt.read_text(encoding="utf-8")
 
+    config_prompt = Path.cwd() / "configs" / "base_system_prompt.txt"
+    if config_prompt.exists():
+        return config_prompt.read_text(encoding="utf-8")
+
     logging.error("Failed to load packaged system prompt from package or local path.")
     logging.error("Tip: reinstall the package, or pass --system-prompt explicitly.")
     sys.exit(1)
