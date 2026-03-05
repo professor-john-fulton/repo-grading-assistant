@@ -1,0 +1,16 @@
+{
+  "title": "configs/grading_config_example.json",
+  "assignment_pattern": "student_*",
+  "grading_key_file": "../keys/grading_key_example.txt",
+  "required_files": [
+    "**/models.py(1..*)",
+    "**/admin.py(1..*)",
+    "**/settings.py(1..*)",
+    "**/views.py(1..*)",
+    "**/urls.py(1..*)",
+    "**/*.css(0..*)"
+  ],
+  "max_score": 60,
+  "language_profile": ["python", "web"],
+  "exclusions":[]
+}

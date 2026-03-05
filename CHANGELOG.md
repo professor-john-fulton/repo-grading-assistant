@@ -1,46 +1,15 @@
 # Changelog
 
-##  [unreleased]
+## 1.1.0 - 3/4/2026
 
-### Added
-
-
-### Changed
-- 
-
-### Fixed
-- 
-
-### Removed
-- 
-
----
-
-## [0.1.0] - 2026-01-08 - Initial open-source version
-
-### Added
-- Early prototype code and documentation moved without history
-- Cleanup of structure, sample files, and QUICKSTART.md
-- Refactored to installable package with pipx
-- Documentation (License, Security, Code of Conduct, etc)
-- Added tests
--
+- Move version source to top-level VERSION.py and wire package metadata to read from it.
+- Load VERSION.py safely when running from source to keep CLI version reporting consistent.
+- Relocate example configs/keys to top-level configs/ and keys/ with updated paths in docs.
+- Add a strict example config and clarify manual test commands.
+- Fix global config resolution to avoid configs/configs nesting.
+- Add retry logic for transient OpenAI connection/timeouts during grading.
 
 
-
----
-
-
-
-## Notes
-
-- Version numbers may be adjusted as the project evolves.
-- Not all internal refactors are listed; only user- or behavior-impacting changes are included.
-
-All notable changes to this project are documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to semantic versioning where practical.
 
 
 

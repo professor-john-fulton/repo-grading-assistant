@@ -17,7 +17,7 @@ The example demonstrates grading a Django blog application assignment with:
 ## Step 1: Examine the Assignment Structure
 
 ### Grading Key File
-**File:** `docs/examples/grading_key_example.txt`
+**File:** `keys/grading_key_example.txt`
 
 This file contains the assignment requirements with point values:
 
@@ -51,20 +51,22 @@ Stretch Goals:
 ---
 
 ### Configuration File
-**File:** `docs/examples/grading_config_example.json`
+**File:** `configs/grading_config_example.json` (standard example)
+
+**Optional strict example:** `configs/grading_config_strict.json` demonstrates exact cardinality rules.
 
 ```json
 {
-  "title": "docs/examples/grading_config_example.json",
+  "title": "configs/grading_config_example.json",
   "assignment_pattern": "student_*",
-  "grading_key_file": "grading_key_example.txt",
+  "grading_key_file": "../keys/grading_key_example.txt",
   "required_files": [
-    "**/models.py",
-    "**/admin.py",
-    "**/settings.py",
-    "**/views.py",
-    "**/urls.py(2)",
-    "**/*.css"
+    "**/models.py(1..*)",
+    "**/admin.py(1..*)",
+    "**/settings.py(1..*)",
+    "**/views.py(1..*)",
+    "**/urls.py(1..*)",
+    "**/*.css(0..*)"
   ],
   "max_score": 60,
   "language_profile": ["python", "web"],
@@ -77,13 +79,13 @@ Stretch Goals:
 | Field | Purpose | Example Value |
 |-------|---------|---------------|
 | `assignment_pattern` | Glob pattern matching student folders | `student_*` matches `student_1`, `student_2` |
-| `grading_key_file` | Path to grading rubric | `grading_key_example.txt` |
+| `grading_key_file` | Path to grading rubric | `../keys/grading_key_example.txt` |
 | `required_files` | Files that must exist | `**/models.py` finds models.py anywhere |
 | `max_score` | Base points (before bonus) | `60` |
 | `language_profile` | Tech stack hints for AI | `["python", "web"]` |
 | `exclusions` | Patterns to ignore | `[]` (none in this example) |
 
-**Special Pattern:** `**/urls.py(2)` means "exactly 2 urls.py files must exist"
+**Special Pattern:** `**/urls.py(1..*)` means "at least 1 urls.py file must exist"
 
 ---
 
@@ -163,7 +165,7 @@ OPENAI_API_KEY=sk-proj-...your-actual-key...
 From the `grading_assignment_example` directory:
 
 ```bash
-repo-grading-assistant ../../grading_config_example.json
+repo-grading-assistant ../../configs/grading_config_example.json
 ```
 
 **Note:** Path is relative to current directory pointing to the config file.
@@ -175,12 +177,12 @@ repo-grading-assistant ../../grading_config_example.json
 You'll see output similar to:
 
 ```
-🎓 Repository Grading Assistant v1.0.7
+🎓 Repository Grading Assistant
 ═══════════════════════════════════════════════════════════
 
-Configuration loaded: docs/examples/grading_config_example.json
+Configuration loaded: ../../configs/grading_config_example.json
 Assignment pattern: student_*
-Required files: **/models.py, **/admin.py, **/settings.py, **/views.py, **/urls.py(2), **/*.css
+Required files: **/models.py(1..*), **/admin.py(1..*), **/settings.py(1..*), **/views.py(1..*), **/urls.py(1..*), **/*.css(0..*)
 Max score: 60
 Language profile: python, web
 
@@ -292,13 +294,13 @@ student_2,68,60,8,2026-01-28T15:30:45,"","Excellent work with bonus features. Co
 
 ### Required File Cardinality
 
-The pattern `**/urls.py(2)` ensures exactly 2 `urls.py` files exist:
+The pattern `**/urls.py(1..*)` ensures at least 1 `urls.py` file exists:
 - Project-level: `myblogproject/urls.py`
 - App-level: `blog/urls.py`
 
 **If cardinality fails:**
 ```
-⚠ Warning: Expected 2 urls.py files but found 1
+⚠ Warning: Expected at least 1 urls.py file but found 0
   Found: myblogproject/urls.py
   This may indicate missing URL configuration
 ```

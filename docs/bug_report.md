@@ -55,7 +55,7 @@ Paste any error messages or logs:
 
 - **OS:** [e.g., Windows 11, macOS 14, Ubuntu 22.04]
 - **Python version:** [e.g., 3.11.9]
-- **Tool version:** [e.g., 1.0.10] (run `repo-grading-assistant --version`)
+- **Tool version:** (run `repo-grading-assistant --version`)
 - **OpenAI model:** [e.g., gpt-5-mini]
 - **Shell:** [e.g., Git Bash, PowerShell, zsh]
 

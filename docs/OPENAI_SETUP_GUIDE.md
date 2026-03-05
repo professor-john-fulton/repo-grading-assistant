@@ -189,14 +189,14 @@ source .venv/Scripts/activate  # Git Bash
 
 # Test with validation command
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json \
+   --config configs/grading_config_example.json \
   --repo-root docs/examples/grading_assignment_example \
   --validate
 ```
 
 **Expected output:**
 ```
-🎓 Repository Grading Assistant v1.0.10
+🎓 Repository Grading Assistant
 ...
 Found 2 student repositories
 Processing: student_1

@@ -9,7 +9,6 @@ grading key and OpenAI’s API.
 See QUICKSTART.md and README.md for usage.
 """
 
-__version__ = "0.1.0"
 
 import argparse
 import logging
@@ -24,15 +23,41 @@ import fnmatch
 import re
 import openai
 import difflib
+import requests
 from importlib import resources as importlib_resources
-from importlib.metadata import version, PackageNotFoundError
+from importlib import util as importlib_util
+
+
+# ---------------------------------------------------------------------------
+# Version
+# ---------------------------------------------------------------------------
+
+def load_version() -> str:
+    try:
+        from VERSION import __version__
+        return __version__
+    except ModuleNotFoundError:
+        version_path = Path(__file__).resolve().parents[2] / "VERSION.py"
+        if not version_path.exists():
+            return "unknown"
+
+        spec = importlib_util.spec_from_file_location("VERSION", version_path)
+        if spec is None or spec.loader is None:
+            return "unknown"
+
+        module = importlib_util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return getattr(module, "__version__", "unknown")
+
+
+__version__ = load_version()
 
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
 try:
-    from openai import APIError, APITimeoutError
+    from openai import APIError, APITimeoutError, APIConnectionError
 except Exception:  # openai<1.0 fallback
-    from openai.error import APIError, Timeout
+    from openai.error import APIError, Timeout, APIConnectionError
     APITimeoutError = Timeout
 
 try:
@@ -40,16 +65,6 @@ try:
     load_dotenv()
 except ModuleNotFoundError:
     pass
-
-# ---------------------------------------------------------------------------
-# Version
-# ---------------------------------------------------------------------------
-
-try:
-    __version__ = version("repo-grading-assistant")
-except PackageNotFoundError:
-    # Fallback for development if package not installed
-    __version__ = "0.0.0-dev"
 
 # ---------------------------------------------------------------------------
 # Logging Setup
@@ -708,13 +723,39 @@ Respond using the following format:
     thread.start()
 
     try:
-        resp = openai.ChatCompletion.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": "You are a grading assistant."},
-                {"role": "user", "content": prompt},
-            ]
-        )
+        max_attempts = 4
+        base_delay_seconds = 1.5
+        resp = None
+
+        for attempt in range(1, max_attempts + 1):
+            try:
+                resp = openai.ChatCompletion.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": "You are a grading assistant."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    request_timeout=120,
+                )
+                break
+            except (APIConnectionError, APITimeoutError, requests.exceptions.RequestException) as e:
+                if attempt == max_attempts:
+                    logging.error(
+                        f"OpenAI transient error after {max_attempts} attempts for {student_dir.name}: {e}"
+                    )
+                    return None
+
+                delay = min(10.0, base_delay_seconds * (2 ** (attempt - 1)))
+                logging.warning(
+                    f"Transient OpenAI error for {student_dir.name} (attempt {attempt}/{max_attempts}): {e}. "
+                    f"Retrying in {delay:.1f}s..."
+                )
+                time.sleep(delay)
+
+        if resp is None:
+            logging.error(f"No response received from OpenAI for {student_dir.name}.")
+            return None
+
         result_text = resp.choices[0].message["content"].strip()
 
         # Infer bonus behavior if LLM implied it but did not apply it to Total
@@ -792,7 +833,7 @@ def main() -> None:
 
     # Use the config file's folder as the default base for relative paths
     base_dir = config_path.parent
-    configs_dir = (base_dir / "configs")
+    configs_dir = base_dir if base_dir.name == "configs" else (base_dir / "configs")
 
     global_cfg = load_global_config(configs_dir)
 
@@ -836,7 +877,7 @@ def main() -> None:
     profiles = list(cfg.get("language_profile", []))
 
 
-    # Load exclusions library from <config_dir>/configs/exclusions.json
+    # Load exclusions library from <config_dir>/exclusions.json
     excl_path = (configs_dir / "exclusions.json")
     global_exclusions = {}
     if excl_path.exists():

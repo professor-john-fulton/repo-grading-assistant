@@ -103,7 +103,7 @@ repo-grading-assistant --help
 
 ### Set API Key
 
-For local development, create a `.env` file in the project root:
+Create a `.env` file in the project root:
 
 ```bash
 cp .env.example .env
@@ -115,9 +115,9 @@ Then edit `.env` and add your OpenAI API key:
 OPENAI_API_KEY="sk-proj-your-actual-key-here"
 ```
 
-> **Note:** The `.env` file is excluded from git by `.gitignore` to keep your API key secure.
->
-> **For remote deployments:** Use your platform's environment variable configuration (e.g., Railway, Heroku, etc.) instead of a `.env` file.
+> **Note:** The `.env` file is excluded from git by `.gitignore` to keep your API key secure. Never commit this file to version control.
+
+**Alternative:** You can also set `OPENAI_API_KEY` as a system environment variable if you prefer, though the `.env` file approach is recommended for this CLI tool.
 
 ---
 
@@ -128,7 +128,7 @@ After [installation](#installation) and [API key setup](#set-api-key):
 ```bash
 # Try it with included example data (2 sample students)
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json \
+  --config configs/grading_config_example.json \
   --repo-root docs/examples/grading_assignment_example
 ```
 
@@ -353,12 +353,14 @@ Rules support quantity constraints:
 
 | Rule | Meaning |
 |------|--------|
-| urls.py(2) | Exactly 2 files |
+| urls.py(1..*) | At least 1 file |
 | README.md(0..1) | Optional  (zero or one file)|
 | *.png(0..*) | Any number  (zero or more files)|
 | config.json(1..3) | Between 1 and 3 |
 
 Default: **exactly one** file.
+
+For stricter examples, see `configs/grading_config_strict.json` (demonstrates exact cardinality rules).
 
 ---
 
@@ -611,8 +613,8 @@ This is a community project maintained by volunteers. Response times may vary.
 If you use this tool in academic work, please cite:
 
 ```
-Fulton, J. (2026). Repo Grading Assistant: AI-Assisted Rubric-Based 
-Code Evaluation Tool (Version 1.0.10) [Computer software]. 
+Fulton, J. (2026). Repo Grading Assistant: AI-Assisted Rubric-Based
+Code Evaluation Tool [Computer software].
 https://github.com/professor-john-fulton/repo-grading-assistant
 ```
 
@@ -622,7 +624,6 @@ BibTeX:
   author = {Fulton, John},
   title = {Repo Grading Assistant: AI-Assisted Rubric-Based Code Evaluation Tool},
   year = {2026},
-  url = {https://github.com/professor-john-fulton/repo-grading-assistant},
-  version = {1.0.10}
+  url = {https://github.com/professor-john-fulton/repo-grading-assistant}
 }
 ```

@@ -136,7 +136,7 @@ If applicable, add screenshots or example output:
 
 - [ ] Documentation updated for changes
 - [ ] CHANGELOG.md updated
-- [ ] Version bumped if needed (pyproject.toml)
+- [ ] Version bumped if needed (VERSION.py + CHANGELOG.md)
 - [ ] Docstrings added/updated
 
 ### Dependencies

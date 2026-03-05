@@ -495,9 +495,9 @@ repo-grading-assistant --config /full/path/to/grading_config.json
 **Use relative path correctly:**
 ```bash
 # If config is in docs/examples:
-repo-grading-assistant --config docs/examples/grading_config_example.json
+repo-grading-assistant --config configs/grading_config_example.json
 
-# If you're already in docs/examples:
+# If you're already in configs:
 repo-grading-assistant --config grading_config_example.json
 ```
 

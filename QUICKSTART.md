@@ -37,11 +37,11 @@ Create a `./keys/` directory at the project root to store your assignment gradin
 mkdir keys
 ```
 
-You can use `./docs/examples/grading_key_example.txt` as a reference for creating your own grading key files.
+You can use `./keys/grading_key_example.txt` as a reference for creating your own grading key files.
 
 ### Configuration Files
 
-Create assignment configuration files in the `./configs/` directory. You can use `./docs/examples/grading_config_example.json` as a reference.
+Create assignment configuration files in the `./configs/` directory. You can use `./configs/grading_config_example.json` as a reference.
 
 ---
 
@@ -51,7 +51,7 @@ Create assignment configuration files in the `./configs/` directory. You can use
 
 ```bash
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json \
+  --config configs/grading_config_example.json \
   --repo-root docs/examples/grading_assignment_example \
   --dry-run
 ```
@@ -60,7 +60,7 @@ repo-grading-assistant \
 
 ```bash
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json \
+  --config configs/grading_config_example.json \
   --repo-root docs/examples/grading_assignment_example \
   --validate
 ```
@@ -69,7 +69,7 @@ repo-grading-assistant \
 
 ```bash
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json \
+  --config configs/grading_config_example.json \
   --repo-root docs/examples/grading_assignment_example
 ```
 
@@ -138,9 +138,9 @@ OPENAI_API_KEY="sk-proj-abcdeCuwKVqe06QRruGSLLpBm2EagaUb8CIdRvwxyzwvz20lihld0QJu
 
 
 
-You may create a ./keys/ directory  at the base level. Use ./docs/examples/grading_key_example.txt to create an example key file
+You may create a ./keys/ directory at the base level. Use ./keys/grading_key_example.txt to create an example key file
 
-In the ./configs/ directory, you should create  ./docs/examples/grading_config_example.json to create an example config file
+In the ./configs/ directory, you should create ./configs/grading_config_example.json to create an example config file
 
 
 

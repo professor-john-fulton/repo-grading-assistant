@@ -80,10 +80,10 @@ Last Updated: January 28, 2026
 **Fix Required:** Use generic branch name like "feature/my-changes" or "fix/documentation"
 
 ### 2.6 Conflicting Configuration Examples
-**Files:** `configs/grading_config_example.json`, `docs/examples/grading_config_example.json`
+**Files:** `configs/grading_config_example.json`
 **Issue:** Two different example files with different patterns:
 - `configs/` version uses `lab-5-*` pattern and `Lab05-key.txt`
-- `docs/examples/` version uses `student_*` pattern and `grading_key_example.txt`
+- Example config now lives in `configs/` and should match the example data structure.
 **Impact:** Unclear which is the canonical example
 **Fix Required:** 
 - Consolidate to one location

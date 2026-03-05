@@ -28,50 +28,56 @@ The test suite includes one test that calls the actual OpenAI API to validate co
 ## Manual Tests
 
 ```bash
+# Standard example config (matches bundled sample data)
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
+  --config configs/grading_config_example.json  \
   --repo-root docs/examples/grading_assignment_example  \
   --dry-run
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
+  --config configs/grading_config_example.json  \
   --repo-root docs/examples/grading_assignment_example  \
   --validate \
   --dry-run
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
+  --config configs/grading_config_example.json  \
   --repo-root docs/examples/grading_assignment_example  \
   --validate
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
+  --config configs/grading_config_example.json  \
   --repo-root docs/examples/grading_assignment_example  \
   --validate \
   --skip-scored
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
+  --config configs/grading_config_example.json  \
   --repo-root docs/examples/grading_assignment_example  \
   --student student_2 \
   --dry-run
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
+  --config configs/grading_config_example.json  \
   --repo-root docs/examples/grading_assignment_example  \
-  --student student_2 
+  --student student_2
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
+  --config configs/grading_config_example.json  \
   --repo-root docs/examples/grading_assignment_example  \
   --student student_2 \
   --dry-run \
   --validate
 
 repo-grading-assistant \
-  --config docs/examples/grading_config_example.json  \
-  --repo-root docs/examples/grading_assignment_example  
+  --config configs/grading_config_example.json  \
+  --repo-root docs/examples/grading_assignment_example
 
+# Strict example config (demonstrates exact cardinality rules)
 
+repo-grading-assistant \
+  --config configs/grading_config_strict.json  \
+  --repo-root docs/examples/grading_assignment_example  \
+  --dry-run
 ```

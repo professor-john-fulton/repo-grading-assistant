@@ -12,8 +12,12 @@ git remote get-url gitlab  >/dev/null 2>&1 || { echo "Error: remote 'gitlab' not
 git status
 
 
-# Extract version from pyproject.toml
-version=$(grep -m 1 '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+# Extract version from VERSION.py
+version=$(python - <<'PY'
+from VERSION import __version__
+print(__version__)
+PY
+)
 echo ""
 echo "📦 Current version: $version"
 echo ""

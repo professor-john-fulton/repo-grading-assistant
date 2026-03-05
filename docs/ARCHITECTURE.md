@@ -105,8 +105,6 @@ docs/
 ├── EXAMPLES_WALKTHROUGH.md        # Step-by-step guide
 ├── testing.md                     # Testing documentation
 └── examples/                      # Sample data for testing
-    ├── grading_config_example.json
-    ├── grading_key_example.txt
     └── grading_assignment_example/
         ├── student_1/
         └── student_2/
@@ -116,7 +114,11 @@ tests/
 └── test_grade_assignments.py      # Unit & integration tests
 
 configs/
-└── global_config.json             # Global settings (model, params)
+├── exclusions.json                # Default exclusion lists
+└── grading_config_example.json    # Example assignment config
+
+keys/
+└── grading_key_example.txt        # Example grading rubric
 
 logs/
 ├── grading.log                    # Execution log (auto-generated)
@@ -228,7 +230,7 @@ def parse_cardinality(pattern: str) -> tuple[str, tuple[int, int]]:
     Extract cardinality from pattern.
     
     Examples:
-        "urls.py(2)" → ("urls.py", (2, 2))
+        "urls.py(1..*)" → ("urls.py", (1, inf))
         "*.txt(0..1)" → ("*.txt", (0, 1))
         "config.json" → ("config.json", (1, 1))  # default
     """
@@ -557,7 +559,7 @@ Let's trace a complete evaluation:
 {
   "assignment_pattern": "student_*",
   "grading_key_file": "lab5_key.txt",
-  "required_files": ["**/models.py", "**/views.py", "**/urls.py(2)"],
+    "required_files": ["**/models.py(1..*)", "**/views.py(1..*)", "**/urls.py(1..*)"],
   "max_score": 60,
   "language_profile": ["python", "web"]
 }
@@ -609,7 +611,7 @@ repos = find_repos(repo_root=".", pattern="student_*")
 ```python
 files = collect_required_files(
     repo_path="student_alice",
-    patterns=["**/models.py", "**/views.py", "**/urls.py(2)"],
+    patterns=["**/models.py(1..*)", "**/views.py(1..*)", "**/urls.py(1..*)"],
     exclusions=["__pycache__", "node_modules"]
 )
 # → {
@@ -620,7 +622,7 @@ files = collect_required_files(
 # }
 
 # Cardinality check
-validate_cardinality("**/urls.py(2)", ["blog/urls.py", "myproject/urls.py"])
+validate_cardinality("**/urls.py(1..*)", ["blog/urls.py", "myproject/urls.py"])
 # → (True, "Found 2 (valid)")
 ```
 
