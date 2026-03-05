@@ -11,6 +11,20 @@ git remote get-url gitlab  >/dev/null 2>&1 || { echo "Error: remote 'gitlab' not
 
 git status
 
+if git diff --quiet && git diff --cached --quiet; then
+  echo ""
+  read -r -p "No changes detected. Continue with tests and push anyway? (y/N): " continue_no_changes
+  case "${continue_no_changes}" in
+    [yY]|[yY][eE][sS])
+      echo "Continuing without new commits."
+      ;;
+    *)
+      echo "Aborted."
+      exit 0
+      ;;
+  esac
+fi
+
 
 # Extract version from VERSION.py
 version=$(python - <<'PY'
@@ -29,7 +43,11 @@ if [[ -z "${message}" ]]; then
 fi
 
 git add -A
-git commit -m "$message"
+if git diff --cached --quiet; then
+  echo "No changes to commit."
+else
+  git commit -m "$message"
+fi
 
 # Sync first (avoids push rejection)
 git pull --rebase github main
