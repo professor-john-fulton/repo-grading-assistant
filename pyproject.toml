@@ -32,6 +32,9 @@ Issues = "https://github.com/professor-john-fulton/repo-grading-assistant/issues
 [tool.setuptools]
 py-modules = ["VERSION"]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.setuptools.dynamic]
 version = {attr = "VERSION.__version__"}
 
