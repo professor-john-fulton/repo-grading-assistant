@@ -25,32 +25,7 @@ import openai
 import difflib
 import requests
 from importlib import resources as importlib_resources
-from importlib import util as importlib_util
-
-
-# ---------------------------------------------------------------------------
-# Version
-# ---------------------------------------------------------------------------
-
-def load_version() -> str:
-    try:
-        from VERSION import __version__
-        return __version__
-    except ModuleNotFoundError:
-        version_path = Path(__file__).resolve().parents[2] / "VERSION.py"
-        if not version_path.exists():
-            return "unknown"
-
-        spec = importlib_util.spec_from_file_location("VERSION", version_path)
-        if spec is None or spec.loader is None:
-            return "unknown"
-
-        module = importlib_util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return getattr(module, "__version__", "unknown")
-
-
-__version__ = load_version()
+from ._version import __version__
 
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations

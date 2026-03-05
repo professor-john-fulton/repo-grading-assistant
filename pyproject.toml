@@ -29,14 +29,11 @@ testpaths = ["tests"]
 Homepage = "https://github.com/professor-john-fulton/repo-grading-assistant"
 Issues = "https://github.com/professor-john-fulton/repo-grading-assistant/issues"
 
-[tool.setuptools]
-py-modules = ["VERSION"]
-
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.dynamic]
-version = {attr = "VERSION.__version__"}
+version = {attr = "repo_grading_assistant._version.__version__"}
 
 [tool.setuptools.package-data]
 repo_grading_assistant = ["data/*.txt"]
