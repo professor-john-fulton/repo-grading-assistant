@@ -27,7 +27,6 @@ tests/coverage_html/
 .venv/
 
 # application specific
-keys/
 tests/coverage_html/
 tests/test_run.log
 logs/
