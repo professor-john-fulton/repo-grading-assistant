@@ -16,6 +16,7 @@ from src.repo_grading_assistant.grade_assignments import (
     find_with_escalation,
     is_excluded,
     load_global_config,
+    resolve_configs_dir,
     resolve_grading_key_path,
     extract_bonus_behaviors_from_key,
 )
@@ -470,6 +471,18 @@ def test_find_all_by_pattern_with_wildcards(tmp_path):
     assert test_files[0].name == "test_main.py"
 
 
+def test_find_all_by_pattern_double_star_prefix_matches_root_file(tmp_path):
+    """Ensure **/filename also matches files at repository root."""
+    root = tmp_path
+    pkg = root / "package.json"
+    pkg.write_text("{}", encoding="utf-8")
+
+    matches = find_all_by_pattern(root, "**/package.json", exclusions=[])
+    rels = {m.relative_to(root).as_posix() for m in matches}
+
+    assert "package.json" in rels
+
+
 def test_csv_row_special_characters(temp_project):
     """Test CSV handling with special characters in feedback."""
     csv_path = temp_project["logs"] / "test_special.csv"
@@ -655,6 +668,28 @@ def test_load_global_config_empty_file(tmp_path):
     # Should return empty dict
     cfg = load_global_config(configs_dir)
     assert cfg == {}
+
+
+def test_resolve_configs_dir_when_config_is_inside_configs(tmp_path):
+    configs_dir = tmp_path / "configs"
+    configs_dir.mkdir()
+    config_file = configs_dir / "homework03_config.json"
+    config_file.write_text("{}", encoding="utf-8")
+    (configs_dir / "exclusions.json").write_text("{}", encoding="utf-8")
+
+    resolved = resolve_configs_dir(config_file)
+    assert resolved == configs_dir
+
+
+def test_resolve_configs_dir_when_config_is_at_repo_root(tmp_path):
+    config_file = tmp_path / "homework03_config.json"
+    config_file.write_text("{}", encoding="utf-8")
+    shared = tmp_path / "configs"
+    shared.mkdir()
+    (shared / "global_config.json").write_text("{}", encoding="utf-8")
+
+    resolved = resolve_configs_dir(config_file)
+    assert resolved == shared
 
 
 def test_resolve_grading_key_path_absolute(tmp_path):

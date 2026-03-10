@@ -8,6 +8,7 @@
 - Add a strict example config and clarify manual test commands.
 - Fix global config resolution to avoid configs/configs nesting.
 - Add retry logic for transient OpenAI connection/timeouts during grading.
+- edits to wildcard student file location matching
 
 
 

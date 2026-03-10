@@ -9,6 +9,7 @@ grading key and OpenAI’s API.
 See QUICKSTART.md and README.md for usage.
 """
 
+__version__ = "0.1.0"
 
 import argparse
 import logging
@@ -25,7 +26,7 @@ import openai
 import difflib
 import requests
 from importlib import resources as importlib_resources
-from ._version import __version__
+from importlib.metadata import version, PackageNotFoundError
 
 
 # OpenAI Python SDK: support both old (<1.0) and new (>=1.0) exception locations
@@ -40,6 +41,16 @@ try:
     load_dotenv()
 except ModuleNotFoundError:
     pass
+
+# ---------------------------------------------------------------------------
+# Version
+# ---------------------------------------------------------------------------
+
+try:
+    __version__ = version("repo-grading-assistant")
+except PackageNotFoundError:
+    # Fallback for development if package not installed
+    __version__ = "0.0.0-dev"
 
 # ---------------------------------------------------------------------------
 # Logging Setup
@@ -107,6 +118,28 @@ def load_global_config(configs_dir: Path) -> dict:
         logging.error(f"Failed to parse global config JSON ({path}): {e}")
         logging.error("Falling back to built-in defaults.")
         return {}
+
+
+def resolve_configs_dir(config_path: Path) -> Path:
+    """
+    Resolve the directory that contains shared config files such as
+    exclusions.json and global_config.json.
+
+    Supports either of these layouts:
+      1) <repo>/configs/<assignment>.json
+      2) <repo>/<assignment>.json with shared files in <repo>/configs/
+    """
+    base_dir = config_path.parent
+
+    # Most common layout: config file is already inside ./configs.
+    if (base_dir / "exclusions.json").exists() or (base_dir / "global_config.json").exists():
+        return base_dir
+
+    nested = base_dir / "configs"
+    if nested.exists() and nested.is_dir():
+        return nested
+
+    return base_dir
     
 
 
@@ -121,19 +154,9 @@ def load_packaged_system_prompt() -> str:
         )
         return prompt_path.read_text(encoding="utf-8")
     except Exception as e:
-        logging.warning(f"Failed to load packaged system prompt: {e}")
-
-    local_prompt = Path(__file__).resolve().parent / "data" / "base_system_prompt.txt"
-    if local_prompt.exists():
-        return local_prompt.read_text(encoding="utf-8")
-
-    config_prompt = Path.cwd() / "configs" / "base_system_prompt.txt"
-    if config_prompt.exists():
-        return config_prompt.read_text(encoding="utf-8")
-
-    logging.error("Failed to load packaged system prompt from package or local path.")
-    logging.error("Tip: reinstall the package, or pass --system-prompt explicitly.")
-    sys.exit(1)
+        logging.error(f"Failed to load packaged system prompt: {e}")
+        logging.error("Tip: reinstall the package, or pass --system-prompt explicitly.")
+        sys.exit(1)
 
 
 # ---------------------------------------------------------------------------
@@ -480,8 +503,13 @@ def find_all_by_pattern(root: Path, pattern: str, exclusions: list[str]) -> list
     """
     matches = []
 
-    # Normalize pattern for cross-platform matching
+    # Normalize pattern for cross-platform matching.
+    # fnmatch does not treat "**/foo" as matching "foo" at root,
+    # so include a root-level fallback without the leading "**/".
     normalized = pattern.replace("\\", "/").lower()
+    patterns = [normalized]
+    if normalized.startswith("**/"):
+        patterns.append(normalized[3:])
 
     for path in root.rglob("*"):
         if is_excluded(path, exclusions, root):
@@ -490,7 +518,7 @@ def find_all_by_pattern(root: Path, pattern: str, exclusions: list[str]) -> list
         # Match using relative path from root
         rel = str(path.relative_to(root)).replace("\\", "/").lower()
 
-        if fnmatch.fnmatch(rel, normalized):
+        if any(fnmatch.fnmatch(rel, pat) for pat in patterns):
             matches.append(path)
 
     return matches
@@ -816,9 +844,10 @@ def main() -> None:
     config_path = Path(args.config).expanduser().resolve()
     cfg = load_config(str(config_path))
 
-    # Use the config file's folder as the default base for relative paths
+    # Use config location for relative paths and detect shared configs directory.
     base_dir = config_path.parent
-    configs_dir = base_dir if base_dir.name == "configs" else (base_dir / "configs")
+    configs_dir = resolve_configs_dir(config_path)
+    logging.info(f"[CONFIG] Shared config dir → {configs_dir}")
 
     global_cfg = load_global_config(configs_dir)
 
@@ -862,7 +891,7 @@ def main() -> None:
     profiles = list(cfg.get("language_profile", []))
 
 
-    # Load exclusions library from <config_dir>/exclusions.json
+    # Load exclusions library from resolved shared config dir.
     excl_path = (configs_dir / "exclusions.json")
     global_exclusions = {}
     if excl_path.exists():

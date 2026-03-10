@@ -80,4 +80,78 @@ repo-grading-assistant \
   --config configs/grading_config_strict.json  \
   --repo-root docs/examples/grading_assignment_example  \
   --dry-run
+
+
+# ########################################################
+
+repo-grading-assistant \
+  --config configs/homework02_config.json \
+  --repo-root /D/Exercises/26SP/ITEC660/Homework-2 \
+  --dry-run
+
+  repo-grading-assistant \
+  --config configs/homework02_config.json \
+  --repo-root /D/Exercises/26SP/ITEC660/Homework-2 
+
+
+repo-grading-assistant \
+  --config configs/lab01_config.json \
+  --repo-root /D/Exercises/26SP/ITEC660/Lab-1 \
+  --dry-run
+
+  repo-grading-assistant \
+  --config configs/lab01_config.json \
+  --repo-root /D/Exercises/26SP/ITEC660/Lab-1 \
+
+
+ repo-grading-assistant   
+ --config configs/homework02_config.json   
+ --repo-root /D/Exercises/26SP/ITEC660/Homework-2  
+ --student homework-2-minnu987
+
+
+  repo-grading-assistant \
+  --config configs/lab01_config.json \
+  --repo-root /D/Exercises/26SP/ITEC660/Lab-1 \
+  --skip-scored
+
+
+ repo-grading-assistant  \
+  --config configs/homework03_config.json  \
+  --repo-root /D/Exercises/26SP/ITEC660/Homework-3 \
+  --dry-run
+
+ repo-grading-assistant  \
+  --config configs/homework03_config.json  \
+  --repo-root /D/Exercises/26SP/ITEC660/Homework-3 \
+  --dry-run \
+  --validate
+
+ repo-grading-assistant  \
+  --config configs/homework03_config.json  \
+  --repo-root /D/Exercises/26SP/ITEC660/Homework-3 
+
+  
+  repo-grading-assistant   \
+ --config configs/homework03_config.json   \
+ --repo-root /D/Exercises/26SP/ITEC660/Homework-3  \
+ --student Homework-3-jbinkley10-dot 
+
+  repo-grading-assistant   \
+ --config configs/homework03_config.json   \
+ --repo-root /D/Exercises/26SP/ITEC660/Homework-3  
+
+
+ repo-grading-assistant   \
+ --config configs/homework02_config.json   \
+ --repo-root /D/Exercises/26SP/ITEC660/Homework-2  \
+ --student homework-2-jbinkley10-dot 
+
+
+ repo-grading-assistant   \
+ --config configs/homework02_config.json   \
+ --repo-root /D/Exercises/26SP/ITEC660/Homework-2  \
+ --student homework-2-KeerthiPashikanti23
+
+
 ```

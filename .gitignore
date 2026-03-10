@@ -1,5 +1,11 @@
 # .gitignore
 
+#custom to application
+configs/homework*
+configs/lab*
+keys/Homework*
+keys/Lab*
+
 # Python build artifacts
 build/
 dist/
