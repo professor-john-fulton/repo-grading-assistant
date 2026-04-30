@@ -5,6 +5,7 @@ configs/homework*
 configs/lab*
 keys/Homework*
 keys/Lab*
+docs/testing_local.md
 
 # Python build artifacts
 build/
