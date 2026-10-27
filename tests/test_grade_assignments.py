@@ -93,7 +93,8 @@ def test_append_csv_row_creates_and_appends(temp_project):
                    "Grade: 100/100\n- Excellent work",
                    "Graded")
 
-    rows = list(csv.reader(open(csv_path)))
+    with csv_path.open(newline="") as csv_file:
+        rows = list(csv.reader(csv_file))
     assert len(rows) == 3  # header + 2 rows
     assert "student_jdoe" in rows[1][2]
 
@@ -202,7 +203,7 @@ def test_main_dry_run(monkeypatch, temp_project, fake_env):
     config = temp_project["config_file"]
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import src.repo_grading_assistant.grade_assignments as grade_assignments
+    from src.repo_grading_assistant import grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))
@@ -222,7 +223,7 @@ def test_main_validate(monkeypatch, temp_project, fake_env, fake_openai):
     config = temp_project["config_file"]
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import src.repo_grading_assistant.grade_assignments as grade_assignments
+    from src.repo_grading_assistant import grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))
@@ -244,7 +245,7 @@ def test_skip_scored(temp_project, monkeypatch, fake_env):
     (student / "grade_summary.txt").write_text("DONE")
 
     # Make the app think grade_assignments.py lives inside the temp project root
-    import src.repo_grading_assistant.grade_assignments as grade_assignments
+    from src.repo_grading_assistant import grade_assignments
     fake_script = temp_project["root"] / "grade_assignments.py"
     fake_script.write_text("# shim for tests\n", encoding="utf-8")
     monkeypatch.setattr(grade_assignments, "__file__", str(fake_script))
@@ -609,7 +610,8 @@ def test_csv_appending_preserves_existing_data(temp_project):
     append_csv_row(csv_path, "student3", "Score: 95", "Graded")
     
     # Read and verify all rows exist
-    rows = list(csv.reader(open(csv_path)))
+    with csv_path.open(newline="") as csv_file:
+        rows = list(csv.reader(csv_file))
     assert len(rows) == 4  # header + 3 rows
     
     # Verify specific data
@@ -806,8 +808,7 @@ def test_write_grade_summary_empty_content(tmp_path):
 
 def test_write_grade_summary_overwrite_readonly():
     """Test that write_grade_summary overwrites existing files."""
-    # This test verifies the documented behavior
-    pass  # Already tested in test_write_grade_summary_overwrites
+    # Already tested in test_write_grade_summary_overwrites
 
 
 # --------------------------------------------------------------------
@@ -879,7 +880,7 @@ def test_cardinality_exact_count_violation(tmp_path):
     matches = find_all_by_pattern(root, "urls.py", exclusions=[])
     
     # Parse rule expecting 2
-    pattern, min_count, max_count = parse_rule("urls.py(2)")
+    _pattern, min_count, _max_count = parse_rule("urls.py(2)")
     
     # Check violation
     assert len(matches) < min_count  # Violation: need 2, have 1
@@ -892,7 +893,7 @@ def test_cardinality_range_violation_too_few(tmp_path):
     # Create no files when we need 1-3
     matches = find_all_by_pattern(root, "config.json", exclusions=[])
     
-    pattern, min_count, max_count = parse_rule("config.json(1..3)")
+    _pattern, min_count, _max_count = parse_rule("config.json(1..3)")
     
     assert len(matches) < min_count  # Violation: need at least 1
 
@@ -907,7 +908,7 @@ def test_cardinality_range_violation_too_many(tmp_path):
     
     matches = find_all_by_pattern(root, "*.json", exclusions=[])
     
-    pattern, min_count, max_count = parse_rule("*.json(1..3)")
+    _pattern, _min_count, max_count = parse_rule("*.json(1..3)")
     
     assert len(matches) > max_count  # Violation: have 5, max is 3
 
@@ -919,7 +920,7 @@ def test_cardinality_optional_zero_files(tmp_path):
     # Create no README (optional)
     matches = find_all_by_pattern(root, "README.md", exclusions=[])
     
-    pattern, min_count, max_count = parse_rule("README.md(0..1)")
+    _pattern, min_count, max_count = parse_rule("README.md(0..1)")
     
     # Valid: 0 files when 0..1 allowed
     assert min_count <= len(matches) <= max_count
@@ -935,7 +936,7 @@ def test_cardinality_unbounded_any_count(tmp_path):
     
     matches = find_all_by_pattern(root, "*.png", exclusions=[])
     
-    pattern, min_count, max_count = parse_rule("*.png(0..*)")
+    _pattern, min_count, max_count = parse_rule("*.png(0..*)")
     
     # Valid: any number allowed
     assert min_count <= len(matches)
@@ -1013,4 +1014,3 @@ def test_openai_api_access_and_response():
 
 # --------------------------------------------------------------------
 # End of tests/test_grade_assignments.py
-
