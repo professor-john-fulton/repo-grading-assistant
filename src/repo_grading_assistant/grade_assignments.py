@@ -908,6 +908,15 @@ def main() -> None:
     # Finally, add assignment-specific overrides
     exclusions.extend(base_exclusions)
 
+    # Explicitly required files must not be dropped by broad wildcard exclusions (e.g. "*.log")
+    required_names = [Path(r).name.lower() for r in required_files if "*" not in Path(r).name]
+    exclusions = [
+        rule for rule in exclusions
+        if rule in base_exclusions
+        or not ("*" in rule and "/" not in rule
+                and any(fnmatch.fnmatch(n, rule.lower()) for n in required_names))
+    ]
+
     # gpt-5-mini is the backup value in case nothing is specified in global config,
     model = cfg.get("model") or global_cfg.get("model", "gpt-5-mini")
 

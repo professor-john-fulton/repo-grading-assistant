@@ -3,8 +3,10 @@
 #custom to application
 configs/homework*
 configs/lab*
+configs-old/
 keys/Homework*
 keys/Lab*
+keys-old/
 docs/testing_local.md
 
 # Python build artifacts
